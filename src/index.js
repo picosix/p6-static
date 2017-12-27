@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const methodOverride = require('method-override');
 const multer = require('multer');
 const _ = require('lodash');
 const slug = require('slug');
@@ -14,6 +15,7 @@ const app = express();
 
 // Midleware
 app.use(bodyParser.json());
+app.use(methodOverride());
 
 // Routes
 const packageJson = require('../package.json');
@@ -53,9 +55,10 @@ app.get('/images/:id', async (req, res, next) => {
     const { size = 'full' } = req.query;
     const imageSrc = `${config.folders.resource}/${id}`;
 
+    // Check image size
     const imageSize = config.sizes[size];
     if (!imageSize && size !== 'full') {
-      throw new Error(`The request size is not allow #{size}`);
+      throw new Error(`Image size is invalid #${size}`);
     }
 
     // Serve cache file
@@ -64,6 +67,7 @@ app.get('/images/:id', async (req, res, next) => {
       return fs.createReadStream(`${cacheFolder}/${id}`).pipe(res);
     }
 
+    // Caculate width and height
     let imageWidth;
     let imageHeight;
     const image = sharp(imageSrc);
@@ -84,12 +88,6 @@ app.get('/images/:id', async (req, res, next) => {
 
     // Embeded another image
     if (config.embeddedImage && shelljs.test('-f', config.embeddedImage.src)) {
-      if (!shelljs.test('-f', config.embeddedImage.src)) {
-        throw new Error(
-          `Embedded image is not exist #${config.embeddedImage.src}`
-        );
-      }
-
       let embeddedWidth;
       let embeddedHeight;
       const embedded = sharp(config.embeddedImage.src);
@@ -116,10 +114,24 @@ app.get('/images/:id', async (req, res, next) => {
         embedded.resize(embeddedWidth, embeddedHeight);
       }
 
+      const allowGravities = [
+        'north',
+        'northeast',
+        'east',
+        'southeast',
+        'south',
+        'southwest',
+        'west',
+        'northwest',
+        'center',
+        'centre'
+      ];
+      const gravity =
+        allowGravities.indexOf(config.embeddedImage.position) > -1
+          ? config.embeddedImage.position
+          : 'southwest';
       // Set embedded image
-      image.overlayWith(await embedded.toBuffer(), {
-        gravity: config.embeddedImage.position
-      });
+      image.overlayWith(await embedded.toBuffer(), { gravity });
     }
 
     // Only resize image if both width and height is truthy
@@ -139,10 +151,10 @@ app.get('/images/:id', async (req, res, next) => {
 });
 
 // Clear cache
-app.get('/cache', async (req, res) => {
+app.delete('/cache', async (req, res) => {
   shelljs.rm('-rf', `${config.folders.cache}/*`);
   await createFolder(config);
-  res.json({ status: 200 });
+  res.json({});
 });
 
 // Error handler

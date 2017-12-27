@@ -29,7 +29,7 @@ module.exports = {
       lg: 0.8,
       '70x70': { width: 10, height: 10 }
     },
-    position: process.env.EMBEDDED_POSITION
+    position: process.env.EMBEDDED_POSITION || 'southwest'
   },
   sizes: {
     // You can use percent

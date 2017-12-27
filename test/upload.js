@@ -1,6 +1,7 @@
 const fs = require('fs');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const shelljs = require('shelljs');
 
 const app = require('..');
 const config = require('../src/config');
@@ -13,6 +14,7 @@ describe('Upload', () => {
 
   before(async () => {
     server = chai.request(app);
+    shelljs.rm('-rf', `${config.folders.resource}/*`);
   });
 
   it('should upload images successfully', async () => {
@@ -33,13 +35,16 @@ describe('Upload', () => {
       'The number of return files should be matched'
     );
 
-    fs.readdir(config.folders.resource, (err, files) => {
-      assert.isNotOk(err);
-      assert.equal(
-        files.length,
-        1,
-        'The uploaded file should be in the right place'
-      );
-    });
+    return new Promise(resolve =>
+      fs.readdir(config.folders.resource, (err, files) => {
+        assert.isNotOk(err);
+        assert.equal(
+          files.filter(file => file[0] !== '.').length,
+          1,
+          'The uploaded file should be in the right place'
+        );
+        resolve(true);
+      })
+    );
   });
 });

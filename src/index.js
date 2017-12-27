@@ -55,6 +55,11 @@ app.get('/images/:id', async (req, res, next) => {
     const { size = 'full' } = req.query;
     const imageSrc = `${config.folders.resource}/${id}`;
 
+    // Check image is exist
+    if (!shelljs.test('-f', imageSrc)) {
+      throw new Error(`Image is not eixst #${id}`);
+    }
+
     // Check image size
     const imageSize = config.sizes[size];
     if (!imageSize && size !== 'full') {
@@ -158,11 +163,13 @@ app.delete('/cache', async (req, res) => {
 });
 
 // Error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   const message = config.debug
     ? err.message
     : 'An error encountered while processing images';
-  return res.status(500).json({ message });
+  res.status(500).json({ message });
+
+  return next();
 });
 
 module.exports = app;

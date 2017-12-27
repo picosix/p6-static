@@ -30,14 +30,22 @@ const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, `${config.folders.resource}`);
   },
-  filename(req, { originalname, mimetype }, cb) {
+  filename({ query = {} }, { originalname, mimetype }, cb) {
     const nameSegments = originalname.split('.');
-    const name = slug(nameSegments[0], { lower: true });
+    const name = slug(query.name ? query.name : nameSegments[0], {
+      lower: true
+    });
 
     const mineTypeSegments = mimetype.split('/');
     const ext = mineTypeSegments[1] || 'jpeg';
 
-    cb(null, `${Date.now()}-${name}.${ext}`);
+    const now = new Date();
+
+    cb(
+      null,
+      `${now.getFullYear()}-${now.getMonth() +
+        1}-${now.getDate()}-${name}.${ext}`
+    );
   }
 });
 const fileFilter = (req, { mimetype }, cb) =>

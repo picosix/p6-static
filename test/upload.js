@@ -1,4 +1,5 @@
 const fs = require('fs');
+const querystring = require('querystring');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const shelljs = require('shelljs');
@@ -19,7 +20,7 @@ describe('Upload', () => {
 
   it('should upload images successfully', async () => {
     const { status, body } = await server
-      .post('/upload')
+      .post(`/upload?${querystring.stringify({ name: 'wonder woman' })}`)
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),

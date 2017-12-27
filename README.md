@@ -1,3 +1,3 @@
 # p6-cdn
 
-> Serve image with the best size
+> Serve an image at different size / resolution depending on user request

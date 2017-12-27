@@ -158,12 +158,11 @@ app.delete('/cache', async (req, res) => {
 });
 
 // Error handler
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   const message = config.debug
     ? err.message
     : 'An error encountered while processing images';
-  res.json({ message });
-  return next();
+  return res.status(500).json({ message });
 });
 
 module.exports = app;

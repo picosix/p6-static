@@ -51,7 +51,6 @@ app.post('/upload', upload.array('images'), ({ files }, res) =>
 
 // Serve image
 app.get('/image/:size/:id', async (req, res, next) => {
-  console.log(Date.now());
   try {
     const { id } = req.params;
     const { size = 'full' } = req.params;

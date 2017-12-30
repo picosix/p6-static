@@ -1,14 +1,13 @@
-const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const multer = require('multer');
 const _ = require('lodash');
 const slug = require('slug');
-const sharp = require('sharp');
 const shelljs = require('shelljs');
 
 const config = require('./config');
+const { resize } = require('./p6Static');
 const { createFolder } = require('./utils');
 const logger = require('./logger');
 
@@ -55,128 +54,9 @@ app.get('/image/:size/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
     const { size = 'full' } = req.params;
-    const imageSrc = `${config.folders.resource}/${id}`;
 
-    // Check image is exist
-    if (!shelljs.test('-f', imageSrc)) {
-      logger.error(`Image is not eixst #${id}`, {
-        url: req.url,
-        query: req.query,
-        params: req.params,
-        body: req.body,
-        headers: req.headers
-      });
-      throw new Error(`Image is not eixst #${id}`);
-    }
-
-    // Check image size
-    const imageSize = config.sizes[size];
-    if (!imageSize && size !== 'full') {
-      logger.error(`Image size is invalid #${size}`, {
-        url: req.url,
-        query: req.query,
-        params: req.params,
-        body: req.body,
-        headers: req.headers
-      });
-      throw new Error(`Image size is invalid #${size}`);
-    }
-
-    // Serve cache file
-    const cacheFolder = `${config.folders.cache}/${size}`;
-    if (shelljs.test('-f', `${cacheFolder}/${id}`)) {
-      return fs.createReadStream(`${cacheFolder}/${id}`).pipe(res);
-    }
-
-    // Caculate width and height
-    let imageWidth;
-    let imageHeight;
-    const image = sharp(imageSrc);
-    const imageMetadata = await image.metadata();
-    if (_.isNumber(imageSize)) {
-      imageWidth = imageMetadata.width * imageSize;
-      imageHeight = imageMetadata.height * imageSize;
-    }
-    if (
-      _.isObject(imageSize) &&
-      _.isNumber(imageSize.width) &&
-      _.isNumber(imageSize.height)
-    ) {
-      const { width: iw, height: ih } = imageSize;
-      imageWidth = iw;
-      imageHeight = ih;
-    }
-
-    if (config.embeddedImage && !shelljs.test('-f', config.embeddedImage.src)) {
-      logger.warn(`Embedded image is provide but source is not exist`, {
-        config
-      });
-    }
-    // Embeded another image
-    if (config.embeddedImage && shelljs.test('-f', config.embeddedImage.src)) {
-      let embeddedWidth;
-      let embeddedHeight;
-      const embedded = sharp(config.embeddedImage.src);
-      const embeddedMetadata = await embedded.metadata();
-      const embeddedSize = config.embeddedImage.sizes[size];
-
-      // Resize embedded image with percent
-      if (_.isNumber(embeddedSize)) {
-        embeddedWidth = embeddedMetadata.width * embeddedSize;
-        embeddedHeight = embeddedMetadata.height * embeddedSize;
-      }
-      // Resize embedded image with absolute size
-      if (
-        _.isObject(embeddedSize) &&
-        _.isNumber(embeddedSize.width) &&
-        _.isNumber(embeddedSize.height)
-      ) {
-        const { width: iw, height: ih } = embeddedSize;
-        embeddedWidth = iw;
-        embeddedHeight = ih;
-      }
-      // Only resize embedded image if both width and height is truthy
-      if (embeddedWidth && embeddedHeight) {
-        embedded.resize(embeddedWidth, embeddedHeight);
-      }
-
-      const allowGravities = [
-        'north',
-        'northeast',
-        'east',
-        'southeast',
-        'south',
-        'southwest',
-        'west',
-        'northwest',
-        'center',
-        'centre'
-      ];
-
-      if (allowGravities.indexOf(config.embeddedImage.position) > -1) {
-        logger.warn(`Embedded position is invalid`, {
-          config
-        });
-      }
-      const gravity =
-        allowGravities.indexOf(config.embeddedImage.position) > -1
-          ? config.embeddedImage.position
-          : 'southwest';
-      // Set embedded image
-      image.overlayWith(await embedded.toBuffer(), { gravity });
-    }
-
-    // Only resize image if both width and height is truthy
-    if (imageWidth && imageHeight) {
-      image.resize(imageWidth, imageHeight);
-    }
-    // Write cache file
-    image
-      .clone()
-      .toFile(`${cacheFolder}/${id}`)
-      .catch(error => logger.error(error.message, { error }));
-    // Serve image
-    return image.pipe(res);
+    const imageStream = await resize(id, size, config);
+    return imageStream.pipe(res);
   } catch (err) {
     return next(err);
   }

@@ -25,6 +25,7 @@ app.get('/', (req, res) =>
     _.pick(packageJson, ['name', 'version', 'description', 'author', 'license'])
   )
 );
+
 // Upload
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -50,10 +51,10 @@ app.post('/upload', upload.array('images'), ({ files }, res) =>
 );
 
 // Serve image
-app.get('/images/:id', async (req, res, next) => {
+app.get('/image/:size/:id', async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { size = 'full' } = req.query;
+    const { size = 'full' } = req.params;
     const imageSrc = `${config.folders.resource}/${id}`;
 
     // Check image is exist

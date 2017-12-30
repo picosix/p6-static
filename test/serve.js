@@ -27,7 +27,7 @@ describe('Serve image with full size', () => {
   });
 
   it('should return image binary', async () => {
-    const { status, text } = await server.get(`/images/${fileName}`);
+    const { status, text } = await server.get(`/image/full/${fileName}`);
     // Assert
     assert.equal(status, 200);
     return new Promise((resolve, reject) =>

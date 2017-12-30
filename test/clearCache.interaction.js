@@ -8,7 +8,7 @@ const config = require('../src/config');
 const { assert } = chai;
 chai.use(chaiHttp);
 
-describe('Clear cache', () => {
+describe('[Interaction test] Clear cache', () => {
   let server;
 
   before(async () => {

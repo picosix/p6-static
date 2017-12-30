@@ -11,7 +11,7 @@ const { createFolder } = require('../src//utils');
 const { assert } = chai;
 chai.use(chaiHttp);
 
-describe('Serve image with full size', () => {
+describe('[Interaction test] Request image with full size', () => {
   let server;
   let fileName;
 
@@ -36,7 +36,7 @@ describe('Serve image with full size', () => {
     fileName = body.files[0].filename;
   });
 
-  it('should return image binary', async () => {
+  it('should return image binary will full size', async () => {
     const { status, text } = await server.get(`/image/full/${fileName}`);
     // Assert
     assert.equal(status, 200);

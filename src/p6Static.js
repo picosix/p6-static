@@ -37,7 +37,6 @@ const resolveSize = (size, width, height) => {
   let imageHeight;
 
   if (size === 'full') return { imageWidth: width, imageHeight: height };
-
   // Size is percent of original size
   if (_.isNumber(size)) {
     imageWidth = width * size;
@@ -74,8 +73,8 @@ const resolveEmbedded = async (size, { src, sizes }) => {
 
   // Test request size
   // Size FULL is special size, always exist
-  const requestSize = sizes || sizes[size] ? size : size;
-  if (!requestSize || requestSize !== 'full') {
+  const requestSize = sizes && sizes[size] ? sizes[size] : size;
+  if (!requestSize && requestSize !== 'full') {
     logger.error('Request non-exist size', {
       type: 'embedded',
       imgPath: src,
@@ -93,8 +92,9 @@ const resolveEmbedded = async (size, { src, sizes }) => {
   if (!imageWidth || !imageHeight) {
     logger.error('Cannot caculate image size', {
       type: 'embedded',
-      imageMetadata,
-      size: requestSize
+      size: requestSize,
+      imageWidth,
+      imageHeight
     });
     return false;
   }
@@ -140,14 +140,15 @@ const resize = async (imageId, size, opts = {}) => {
 
   // Test request size
   // Size FULL is special size, always exist
-  const requestSize = !opts || !opts.sizes || !opts.sizes[size] ? size : size;
-  if (!requestSize || requestSize !== 'full') {
+  const requestSize =
+    opts && opts.sizes && opts.sizes[size] ? opts.sizes[size] : size;
+  if (!requestSize && requestSize !== 'full') {
     logger.error('Request non-exist size', {
       type: 'requestImage',
       imgPath,
       size: requestSize
     });
-    throw new Error(`Size ${requestSize} of image ${size} is not exist`);
+    throw new Error(`Size ${requestSize} of image ${imageId} is not exist`);
   }
 
   const cacheFolder = `${opts.folders.cache}/${size}`;
@@ -169,8 +170,9 @@ const resize = async (imageId, size, opts = {}) => {
   if (!imageWidth || !imageHeight) {
     logger.error('Cannot caculate image size', {
       type: 'requestImage',
-      imageMetadata,
-      size: requestSize
+      size: requestSize,
+      imageWidth,
+      imageHeight
     });
     throw new Error(`Cannot serve ${imgPath} with size ${size}`);
   }
@@ -189,7 +191,7 @@ const resize = async (imageId, size, opts = {}) => {
   }
   // Insert another image if embedded config is exist
   if (_.isObject(opts.embedded)) {
-    const embeddedBuffer = await resolveEmbedded(opts.embedded || {});
+    const embeddedBuffer = await resolveEmbedded(size, opts.embedded || {});
     if (embeddedBuffer) {
       const gravity = resolveEmbeddedPosition(opts.embedded.position);
       image.overlayWith(embeddedBuffer, { gravity });

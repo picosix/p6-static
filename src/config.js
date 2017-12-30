@@ -25,7 +25,7 @@ module.exports = {
     fileSize: Number(process.env.MAX_SIZE) * 1048576,
     parts: Number(process.env.MAX_PART) || 17
   },
-  embeddedImage: {
+  embedded: {
     src: process.env.EMBEDDED_FILE,
     sizes: {
       xs: 0.2,

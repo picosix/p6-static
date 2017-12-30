@@ -9,3 +9,5 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC64107
   && apt-get update \
   && apt-get install -y ca-certificates nginx gettext-base \
   && rm -rf /var/lib/apt/lists/*
+
+CMD ["nginx", "-g", "daemon off;"]

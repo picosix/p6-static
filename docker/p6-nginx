@@ -1,0 +1,5 @@
+FROM nginx:1
+
+RUN mkdir /app
+WORKDIR /app
+EXPOSE 80

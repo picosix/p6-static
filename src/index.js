@@ -7,11 +7,35 @@ const _ = require('lodash');
 const slug = require('slug');
 const sharp = require('sharp');
 const shelljs = require('shelljs');
+const winston = require('winston');
 
 const config = require('./config');
 const { createFolder } = require('./utils');
 
 const app = express();
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [
+    // - Write to all logs with level `info` and below to `combined.log`
+    // - Write all logs error (and below) to `error.log`.
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/warn.log', level: 'warn' }),
+    new winston.transports.File({ filename: 'logs/combined.log' })
+  ],
+  exceptionHandlers: [
+    new winston.transports.File({ filename: 'logs/exceptions.log' })
+  ]
+});
+// If we're not in production then log to the `console` with the format:
+// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple()
+    })
+  );
+}
 
 // Midleware
 app.use(bodyParser.json());
@@ -59,12 +83,26 @@ app.get('/image/:size/:id', async (req, res, next) => {
 
     // Check image is exist
     if (!shelljs.test('-f', imageSrc)) {
+      logger.error(`Image is not eixst #${id}`, {
+        url: req.url,
+        query: req.query,
+        params: req.params,
+        body: req.body,
+        headers: req.headers
+      });
       throw new Error(`Image is not eixst #${id}`);
     }
 
     // Check image size
     const imageSize = config.sizes[size];
     if (!imageSize && size !== 'full') {
+      logger.error(`Image size is invalid #${size}`, {
+        url: req.url,
+        query: req.query,
+        params: req.params,
+        body: req.body,
+        headers: req.headers
+      });
       throw new Error(`Image size is invalid #${size}`);
     }
 
@@ -93,6 +131,11 @@ app.get('/image/:size/:id', async (req, res, next) => {
       imageHeight = ih;
     }
 
+    if (config.embeddedImage && !shelljs.test('-f', config.embeddedImage.src)) {
+      logger.warn(`Embedded image is provide but source is not exist`, {
+        config
+      });
+    }
     // Embeded another image
     if (config.embeddedImage && shelljs.test('-f', config.embeddedImage.src)) {
       let embeddedWidth;
@@ -133,6 +176,12 @@ app.get('/image/:size/:id', async (req, res, next) => {
         'center',
         'centre'
       ];
+
+      if (allowGravities.indexOf(config.embeddedImage.position) > -1) {
+        logger.warn(`Embedded position is invalid`, {
+          config
+        });
+      }
       const gravity =
         allowGravities.indexOf(config.embeddedImage.position) > -1
           ? config.embeddedImage.position
@@ -149,7 +198,7 @@ app.get('/image/:size/:id', async (req, res, next) => {
     image
       .clone()
       .toFile(`${cacheFolder}/${id}`)
-      .catch(console.log);
+      .catch(error => logger.error(error.message, { error }));
     // Serve image
     return image.pipe(res);
   } catch (err) {
@@ -166,6 +215,7 @@ app.delete('/cache', async (req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
+  logger.error(err.message, { error: err });
   const message = config.debug
     ? err.message
     : 'An error encountered while processing images';

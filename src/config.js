@@ -9,7 +9,12 @@ module.exports = {
       process.env.FOLDER_RESOURCE || 'resource'
     ),
     cache: path.resolve(__dirname, '..', process.env.FOLDER_CACHE || 'cache'),
-    static: path.resolve(__dirname, '..', process.env.FOLDER_STATIC || 'static')
+    static: path.resolve(
+      __dirname,
+      '..',
+      process.env.FOLDER_STATIC || 'static'
+    ),
+    log: path.resolve(__dirname, '..', process.env.FOLDER_LOG || 'log')
   },
   allowTypes: process.env.ALLOW_TYPES.split(',').map(
     type => (typeof type === 'string' ? type.trim() : type)

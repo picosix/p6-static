@@ -13,7 +13,10 @@ const createFolder = async appConfig => {
 
   // Create cache size folder
   _.each([..._.keys(sizes), 'full'], size => {
-    shelljs.mkdir('-p', `${folders.cache}/${size}`);
+    const sizeCacheFolder = `${folders.cache}/${size}`;
+    if (!shelljs.test('-d', sizeCacheFolder)) {
+      shelljs.mkdir('-p', sizeCacheFolder);
+    }
   });
 
   return true;

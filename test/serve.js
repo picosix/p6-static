@@ -1,10 +1,12 @@
 const fs = require('fs');
 const crypto = require('crypto');
+const shelljs = require('shelljs');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 const app = require('..');
 const config = require('../src/config');
+const { createFolder } = require('../src//utils');
 
 const { assert } = chai;
 chai.use(chaiHttp);
@@ -14,6 +16,14 @@ describe('Serve image with full size', () => {
   let fileName;
 
   before(async () => {
+    //  Clear cache
+    shelljs.rm('-rf', `${config.folders.cache}/*`);
+    // Create size cache folder again
+    await createFolder(config);
+
+    // Clear resource
+    shelljs.rm('-rf', `${config.folders.resource}/*`);
+
     server = chai.request(app);
 
     const { body } = await server

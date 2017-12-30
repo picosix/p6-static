@@ -27,7 +27,7 @@ const ensureFolder = async (folders = {}) => {
     folderPath =>
       fs.existsSync(folderPath)
         ? bluebird.resolve(folderPath)
-        : fs.mkdir(folderPath, 644)
+        : bluebird.promisify(fs.mkdir)(folderPath)
   );
   return bluebird.all(ensureQueue).then(() => bluebird.resolve(folders));
 };

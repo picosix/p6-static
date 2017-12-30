@@ -7,8 +7,7 @@ const slug = require('slug');
 const shelljs = require('shelljs');
 
 const config = require('./config');
-const { resize } = require('./p6Static');
-const { createFolder } = require('./utils');
+const { ensureFolder, resize } = require('./p6Static');
 const logger = require('./logger');
 
 const app = express();
@@ -66,7 +65,12 @@ app.get('/image/:size/:id', async (req, res, next) => {
 // Clear cache
 app.delete('/cache', async (req, res) => {
   shelljs.rm('-rf', `${config.folders.cache}/*`);
-  await createFolder(config);
+  await ensureFolder(config.folders);
+  const cacheSizeFolders = _.map(
+    _.assign({ full: true }, config.sizes),
+    (sizeValue, sizeName) => `${config.folders.cache}/${sizeName}`
+  );
+  await ensureFolder(cacheSizeFolders);
   res.json({});
 });
 

@@ -6,7 +6,7 @@
 
 Description: updating ...
 
-## Learning on this project
+## Learning on this project (Vietnamese)
 
 0. [Idea](./document/0-idea.md)
 1. [Build API server with ExpressJS](./document/1-build-api-server-with-expressjs.md)
@@ -29,7 +29,7 @@ Updating ...
 
 ## Installing / Getting started
 
-### Quick start
+### Quick start for dev
 
 1. Clone project
 

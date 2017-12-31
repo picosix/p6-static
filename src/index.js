@@ -1,15 +1,18 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
-const multer = require('multer');
 const _ = require('lodash');
-const slug = require('slug');
 const shelljs = require('shelljs');
 const uuid = require('uuid/v1');
 const bluebird = require('bluebird');
 
 const config = require('./config');
-const { ensureFolderCache, resize, generateCacheUrl } = require('./p6Static');
+const {
+  ensureFolderCache,
+  upload,
+  resize,
+  generateCacheUrl
+} = require('./p6Static');
 const logger = require('./logger');
 const dbConnection = require('./db');
 
@@ -29,57 +32,45 @@ app.get('/', (req, res) =>
 );
 
 // Upload
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, `${config.folders.resource}`);
-  },
-  filename({ query = {} }, { originalname, mimetype }, cb) {
-    const nameSegments = originalname.split('.');
-    const name = slug(query.name ? query.name : nameSegments[0], {
-      lower: true
-    });
-
-    const mineTypeSegments = mimetype.split('/');
-    const ext = mineTypeSegments[1] || 'jpeg';
-    cb(null, `${Date.now()}-${name}.${ext}`);
-  }
-});
-const fileFilter = (req, { mimetype }, cb) =>
-  cb(null, Boolean(config.allowTypes.indexOf(mimetype) > -1));
-const upload = multer({ storage, fileFilter, limits: config.upload });
 // Only allow upload with fields images
-app.post('/upload', upload.array('images'), async ({ files, query }, res) => {
-  const db = await dbConnection;
+app.post(
+  '/upload',
+  upload(config.folders.resource, config.allowTypes, config.upload).array(
+    'images'
+  ),
+  async ({ files, query }, res) => {
+    const db = await dbConnection;
 
-  const insertQueue = [];
-  const images = [];
-  _.each(files, ({ filename, path: imagePath, size }) => {
-    // Insert image information to db
-    insertQueue.push(
-      db
-        .get('resource')
-        .push({
-          id: uuid(),
-          name: filename,
-          path: imagePath,
-          size
-        })
-        .write()
-    );
-    // Prepare image urls return to client
-    images.push({
-      name: filename,
-      size: generateCacheUrl(
-        filename,
-        _.keys(config.sizes),
-        query.pretier === '1' ? process.env.VIRTUAL_HOST : null
-      )
+    const insertQueue = [];
+    const images = [];
+    _.each(files, ({ filename, path: imagePath, size }) => {
+      // Insert image information to db
+      insertQueue.push(
+        db
+          .get('resource')
+          .push({
+            id: uuid(),
+            name: filename,
+            path: imagePath,
+            size
+          })
+          .write()
+      );
+      // Prepare image urls return to client
+      images.push({
+        name: filename,
+        size: generateCacheUrl(
+          filename,
+          _.keys(config.sizes),
+          query.pretier === '1' ? process.env.VIRTUAL_HOST : null
+        )
+      });
     });
-  });
-  await bluebird.all(insertQueue);
+    await bluebird.all(insertQueue);
 
-  res.json({ images, host: process.env.VIRTUAL_HOST });
-});
+    res.json({ images, host: process.env.VIRTUAL_HOST });
+  }
+);
 
 // Serve image
 app.get('/image/:size/:id', async (req, res, next) => {

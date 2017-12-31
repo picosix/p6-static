@@ -1,5 +1,7 @@
 const fs = require('fs');
 const _ = require('lodash');
+const slug = require('slug');
+const multer = require('multer');
 const bluebird = require('bluebird');
 const sharp = require('sharp');
 
@@ -161,6 +163,27 @@ const resolveEmbeddedPosition = position => {
   return pos;
 };
 
+const upload = (resourcePath, allowTypes, uploadConfig) => {
+  const storage = multer.diskStorage({
+    destination(req, file, cb) {
+      cb(null, `${resourcePath}`);
+    },
+    filename({ query = {} }, { originalname, mimetype }, cb) {
+      const nameSegments = originalname.split('.');
+      const name = slug(query.name ? query.name : nameSegments[0], {
+        lower: true
+      });
+
+      const mineTypeSegments = mimetype.split('/');
+      const ext = mineTypeSegments[1] || 'jpeg';
+      cb(null, `${Date.now()}-${name}.${ext}`);
+    }
+  });
+  const fileFilter = (req, { mimetype }, cb) =>
+    cb(null, Boolean(allowTypes.indexOf(mimetype) > -1));
+  return multer({ storage, fileFilter, limits: uploadConfig });
+};
+
 const resize = async (imageId, size, opts = {}) => {
   // Ensure folder config is exist
   if (
@@ -255,6 +278,7 @@ module.exports = {
   ALLOW_POSITION,
   ensureFolder,
   ensureFolderCache,
+  upload,
   resize,
   generateCacheUrl
 };

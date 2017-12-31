@@ -10,7 +10,7 @@ $ cd p6-static
 $ yarn init
 ```
 
-Sau câu lệnh `$ yarn init` thì bạn cần trả lời vài câu hỏi cho project. Bạn có thể chỉ việc nhấn Enter cho đến khi xong. Output có thể như thế này (tuỳ vào bạn xài yarn hay npm)
+* Sau câu lệnh `$ yarn init` thì bạn cần trả lời vài câu hỏi cho project. Bạn có thể chỉ việc nhấn Enter cho đến khi xong. Output có thể như thế này (tuỳ vào bạn xài yarn hay npm)
 
 ```shell
 yarn init v1.3.2
@@ -26,13 +26,13 @@ success Saved package.json
 Done in 39.59s.
 ```
 
-Bây giờ bạn sẽ có một file `package.json` trong project của bạn (với mình là `~/projects/p6-static/package.json`). Tiếp theo bạn cần cài `ExpressJS`
+* Bây giờ bạn sẽ có một file `package.json` trong project của bạn (với mình là `~/projects/p6-static/package.json`). Tiếp theo bạn cần cài `ExpressJS`
 
 ```shell
 $ yan add express
 ```
 
-Tạo file `index.js` để khởi tạo server đầu tiên của bạn.
+* Tạo file `index.js` để khởi tạo server đầu tiên của bạn.
 
 ```javascript
 const express = require('express');
@@ -52,7 +52,7 @@ const port = process.env.PORT || 9999;
 app.listen(port);
 ```
 
-Giờ chạy server của bạn bằng câu lệnh
+* Giờ chạy server của bạn bằng câu lệnh
 
 ```shell
 $ node index.js

@@ -8,7 +8,7 @@ Description: updating ...
 
 ## Learning on this project
 
-0. [Idea](./document/0-idea.md) 
+0. [Idea](./document/0-idea.md)
 1. [Build API server with ExpressJS](./document/1-build-api-server-with-expressjs.md)
 2. Project config (gitignore, eslint, prettier, ...)
 3. Upload image with [multer](https://github.com/expressjs/multer)
@@ -23,6 +23,8 @@ Description: updating ...
 
 ## Contributors
 
+* Maintainer picosix <picosix.com@gmail.com>
+
 Updating ...
 
 ## Installing / Getting started
@@ -31,33 +33,33 @@ Updating ...
 
 1. Clone project
 
-  - Using SSH `git clone git@github.com:picosix/p6-static.git`
-  - Using HTTPS: `git clone https://github.com/picosix/p6-static.git`
+* Using SSH `git clone git@github.com:picosix/p6-static.git`
+* Using HTTPS: `git clone https://github.com/picosix/p6-static.git`
 
 2. Build docker images
 
-  - Node `$ docker build --force-rm -t picosix/node -f docker/p6-node $(pwd)/docker`
-  - Nginx `$ docker build --force-rm -t picosix/nginx -f docker/p6-nginx $(pwd)/docker`
+* Node `$ docker build --force-rm -t picosix/node -f docker/p6-node $(pwd)/docker`
+* Nginx `$ docker build --force-rm -t picosix/nginx -f docker/p6-nginx $(pwd)/docker`
 
 3. Run docker containers
 
-  - Nginx proxy `$ docker run -d --restart always --name nginx-proxy -p 80:80 -p 443:443 -v $(pwd)/certs:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy`
-  - Node app `$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-node -v $(pwd):/app picosix/node yarn start-dev`
-  - Nginx server `$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-nginx -v $(pwd)/docker/nginx:/etc/nginx/conf.d/ -v $(pwd):/app --link p6-static-node:p6_static_node picosix/nginx`
+* Nginx proxy `$ docker run -d --restart always --name nginx-proxy -p 80:80 -p 443:443 -v $(pwd)/certs:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy`
+* Node app `$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-node -v $(pwd):/app picosix/node yarn start-dev`
+* Nginx server `$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-nginx -v $(pwd)/docker/nginx:/etc/nginx/conf.d/ -v $(pwd):/app --link p6-static-node:p6_static_node picosix/nginx`
 
 ## Developing
 
 ### Built With
 
-- NodeJS v9.3.0
-- ExpressJS v4.16.2
-- SharpJS v0.18.4
-- Lowdb v1.0.0
+* NodeJS v9.3.0
+* ExpressJS v4.16.2
+* SharpJS v0.18.4
+* Lowdb v1.0.0
 
 ### Prerequisites
 
-- Docker v17 or higher
-- NodeJS v9 or higher
+* Docker v17 or higher
+* NodeJS v9 or higher
 
 ### Deploying / Publishing
 
@@ -81,7 +83,7 @@ Updating ...
 
 ## Database
 
-- [Lowdb](https://github.com/typicode/lowdb) v1.0.0
+* [Lowdb](https://github.com/typicode/lowdb) v1.0.0
 
 ## Licensing
 
@@ -106,7 +108,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-
-
-

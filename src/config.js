@@ -22,7 +22,7 @@ module.exports = {
   upload: {
     fields: Number(process.env.MAX_FIELD) || 17,
     files: Number(process.env.MAX_FILE) || 17,
-    fileSize: Number(process.env.MAX_SIZE) || 100 * 1048576,
+    fileSize: Number(process.env.MAX_SIZE || 100) * 1048576,
     parts: Number(process.env.MAX_PART) || 17
   },
   embedded: {

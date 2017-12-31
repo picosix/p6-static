@@ -6,6 +6,20 @@
 
 Description: updating ...
 
+## Learning on this project
+
+0. [Idea](./document/0-idea.md) 
+1. [Build API server with ExpressJS](./document/1-build-api-server-with-expressjs.md)
+2. Upload image with [multer](https://github.com/expressjs/multer)
+3. Save image information with [lowdb](https://github.com/typicode/lowdb)
+4. Render image with NodeJS Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
+5. Resize and render image with [sharp](https://github.com/lovell/sharp)
+6. Embedded watermark with [sharp](https://github.com/lovell/sharp)
+7. Write log with [winston](https://github.com/winstonjs/winston)
+8. Write test case
+9. Dockerized your app
+10. Refactor your app structure
+
 ## Contributors
 
 Updating ...

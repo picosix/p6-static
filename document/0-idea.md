@@ -34,10 +34,10 @@
 1. Khởi tạo api server với [express](https://github.com/expressjs/express)
 2. Upload ảnh với [multer](https://github.com/expressjs/multer)
 3. Lưu thông tin ảnh với [lowdb](https://github.com/typicode/lowdb)
-4. Render ảnh bằng Nodejs Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
+4. Render ảnh với Nodejs Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
 5. Resize và render ảnh với [sharp](https://github.com/lovell/sharp)
 6. Chèn watermark với [sharp](https://github.com/lovell/sharp)
-7. Ghi log bằng [winston](https://github.com/winstonjs/winston)
+7. Ghi log với [winston](https://github.com/winstonjs/winston)
 8. Viết test case
 9. Sử dụng docker
 10. Tái cấu trúc code

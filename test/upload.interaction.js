@@ -28,10 +28,10 @@ describe('[Interaction test] Upload', () => {
       .query({ name: 'wonder woman' });
     // Assert
     assert.equal(status, 200);
-    assert.exists(body.files, 'Return files should be exist');
-    assert.isArray(body.files, 'Return array of files');
+    assert.exists(body.images, 'Return files should be exist');
+    assert.isArray(body.images, 'Return array of files');
     assert.equal(
-      body.files.length,
+      body.images.length,
       1,
       'The number of return files should be matched'
     );

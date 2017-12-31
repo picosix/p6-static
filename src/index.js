@@ -5,10 +5,13 @@ const multer = require('multer');
 const _ = require('lodash');
 const slug = require('slug');
 const shelljs = require('shelljs');
+const uuid = require('uuid/v1');
+const bluebird = require('bluebird');
 
 const config = require('./config');
-const { ensureFolder, resize } = require('./p6Static');
+const { ensureFolderCache, resize, generateCacheUrl } = require('./p6Static');
 const logger = require('./logger');
+const dbConnection = require('./db');
 
 const app = express();
 // Midleware
@@ -45,9 +48,38 @@ const fileFilter = (req, { mimetype }, cb) =>
   cb(null, Boolean(config.allowTypes.indexOf(mimetype) > -1));
 const upload = multer({ storage, fileFilter, limits: config.upload });
 // Only allow upload with fields images
-app.post('/upload', upload.array('images'), ({ files }, res) =>
-  res.json({ files })
-);
+app.post('/upload', upload.array('images'), async ({ files, query }, res) => {
+  const db = await dbConnection;
+
+  const insertQueue = [];
+  const images = [];
+  _.each(files, ({ filename, path: imagePath, size }) => {
+    // Insert image information to db
+    insertQueue.push(
+      db
+        .get('resource')
+        .push({
+          id: uuid(),
+          name: filename,
+          path: imagePath,
+          size
+        })
+        .write()
+    );
+    // Prepare image urls return to client
+    images.push({
+      name: filename,
+      size: generateCacheUrl(
+        filename,
+        _.keys(config.sizes),
+        query.pretier === '1' ? process.env.VIRTUAL_HOST : null
+      )
+    });
+  });
+  await bluebird.all(insertQueue);
+
+  res.json({ images, host: process.env.VIRTUAL_HOST });
+});
 
 // Serve image
 app.get('/image/:size/:id', async (req, res, next) => {
@@ -65,13 +97,8 @@ app.get('/image/:size/:id', async (req, res, next) => {
 // Clear cache
 app.delete('/cache', async (req, res) => {
   shelljs.rm('-rf', `${config.folders.cache}/*`);
-  await ensureFolder(config.folders);
-  const cacheSizeFolders = _.map(
-    _.assign({ full: true }, config.sizes),
-    (sizeValue, sizeName) => `${config.folders.cache}/${sizeName}`
-  );
-  await ensureFolder(cacheSizeFolders);
-  res.json({});
+  await ensureFolderCache(config.folders.cache, config.sizes);
+  res.json({ sizes: config.sizes });
 });
 
 // Error handler

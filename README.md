@@ -13,6 +13,6 @@ $ docker build --force-rm -t picosix/nginx -f docker/p6-nginx $(pwd)/docker
 
 ```shell
 $ docker run -d --restart always --name nginx-proxy -p 80:80 -p 443:443 -v $(pwd)/certs:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
-$ docker run -d --restart always --name p6-static-node -v $(pwd):/app picosix/node yarn start-dev
+$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-node -v $(pwd):/app picosix/node yarn start-dev
 $ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-nginx -v $(pwd)/docker/nginx:/etc/nginx/conf.d/ -v $(pwd):/app --link p6-static-node:p6_static_node picosix/nginx
 ```

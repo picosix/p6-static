@@ -1,10 +1,12 @@
 const winston = require('winston');
 
+const { format } = winston;
+
 const config = require('./config');
 
 const logger = winston.createLogger({
   level: 'info',
-  format: winston.format.json(),
+  format: format.combine(format.timestamp(), format.json()),
   transports: [
     // - Write to all logs with level `info` and below to `combined.log`
     // - Write all logs error (and below) to `error.log`.
@@ -32,7 +34,7 @@ const logger = winston.createLogger({
 if (config.debug) {
   logger.add(
     new winston.transports.Console({
-      format: winston.format.simple()
+      format: format.simple()
     })
   );
 }

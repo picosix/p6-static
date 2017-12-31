@@ -6,7 +6,7 @@ const chaiHttp = require('chai-http');
 
 const app = require('..');
 const config = require('../src/config');
-const { createFolder } = require('../src//utils');
+const { ensureFolderCache } = require('../src/p6Static');
 
 const { assert } = chai;
 chai.use(chaiHttp);
@@ -20,8 +20,7 @@ describe('[Interaction test] Request image with full size', () => {
     //  Clear cache
     shelljs.rm('-rf', `${config.folders.cache}/*`);
     // Create size cache folder again
-    await createFolder(config);
-
+    await ensureFolderCache(config.folders.cache, config.sizes);
     // Clear resource
     shelljs.rm('-rf', `${config.folders.resource}/*`);
 
@@ -34,7 +33,7 @@ describe('[Interaction test] Request image with full size', () => {
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),
         'SuperWoman.jpg'
       );
-    fileName = body.files[0].filename;
+    fileName = body.images[0].name;
     [size] = Object.keys(config.sizes);
   });
 

@@ -19,6 +19,40 @@ const ALLOW_POSITION = [
   'centre'
 ];
 
+/* eslint no-param-reassign: 0 */
+const generateCacheUrl = (fileName, sizes = [], host = '') => {
+  if (!_.isArray(sizes) || _.isEmpty(sizes)) {
+    logger.error(
+      'Invalid cache file size. It must be array and cannot be empty',
+      {
+        sizes,
+        fileName
+      }
+    );
+    throw new Error(
+      'Invalid cache file size. It must be array and cannot be empty'
+    );
+  }
+
+  if (!fileName) {
+    logger.warn('Generate cache url with empty files', {
+      sizes,
+      fileName
+    });
+    return {};
+  }
+
+  return _.reduce(
+    sizes,
+    (result, size) => {
+      const hostinger = _.isString(host) && host ? `//${host}` : '';
+      result[size] = `${hostinger}/${size}/${fileName}`;
+      return result;
+    },
+    {}
+  );
+};
+
 const ensureFolder = async (folders = {}) => {
   if (_.isEmpty(folders)) return folders;
 
@@ -30,6 +64,15 @@ const ensureFolder = async (folders = {}) => {
         : bluebird.promisify(fs.mkdir)(folderPath)
   );
   return bluebird.all(ensureQueue).then(() => bluebird.resolve(folders));
+};
+
+const ensureFolderCache = async (cachePath, sizes) => {
+  // Create all size filders
+  const cacheSizeFolders = _.map(
+    _.assign({ full: true }, sizes),
+    (sizeValue, sizeName) => `${cachePath}/${sizeName}`
+  );
+  return ensureFolder(cacheSizeFolders);
 };
 
 const resolveSize = (size, width, height) => {
@@ -208,4 +251,10 @@ const resize = async (imageId, size, opts = {}) => {
   return image;
 };
 
-module.exports = { ALLOW_POSITION, ensureFolder, resize };
+module.exports = {
+  ALLOW_POSITION,
+  ensureFolder,
+  ensureFolderCache,
+  resize,
+  generateCacheUrl
+};

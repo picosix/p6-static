@@ -8,13 +8,13 @@
 * xxx.com/logo/**DATE_TIME**-the-fancy-image.png -> Trả về hình ảnh được resize về kích thước quy định (size cho logo) và kèm watermark
 * xxx.com/logo/**DATE_TIME**-the-fancy-image.png ?crop=1-> Trả về hình ảnh được cắt với kích thước quy định (size cho logo) và kèm watermark
 
-Ở thời điểm đó, do giới hạn về thời gian (deadline dí đến _beep_), trình độ có hạ (junior :D), thủ đoạn cũng không có gì :( nên mình mới chỉ làm xong task mà chưa phải hoàn thành task. Sau một thời gian trăn trở (thật ra là không làm gì cứ nhớ về những dòng code kinh khủng của mình), hiện tại mình có thời gian (khá là rảnh buổi tối và cuối tuần), trình độ đủ kiếm cơm và mong muôn viết lách thì mình quyết đinh làm lại project đó một lần nữa với công nghệ mới hơn.
+Ở thời điểm đó, do giới hạn về thời gian (deadline dí đến #beep#), trình độ có hạn (junior :D), thủ đoạn cũng không có gì :( nên mình mới chỉ làm xong task mà chưa phải hoàn thành task. Sau một thời gian trăn trở (thật ra là không làm gì cứ nhớ về những dòng code kinh khủng của mình), hiện tại mình có thời gian (khá là rảnh buổi tối và cuối tuần), trình độ đủ kiếm cơm và mong muôn viết lách thì mình quyết đinh làm lại project đó một lần nữa với công nghệ mới hơn.
 
 ## Mục đích của project
 
 1. Giúp một số bạn mới bắt đầu cuộc sống của một lập trình viên tham gia vào một project có tính ứng dụng thực tế, thú vị (theo mình là vui hơn là làm TODO project). Hiểu được cách tìm kiếm thông tin, đặt câu hỏi, giải quyết vần đề MỘT MÌNH.
-2. Tạo ra một bản production-ready của static server phục vụ cho nhu cầu render ảnh với các kích thước khac nhau
-3. Mình tin là người Việt Nam cũng có nhiều bạn sẵn sàng làm việc cho một dự án phi lợi nhuận (Nonprofit) :D, Ít nhất trong project này. Mình hoan nghênh mọi cống hiến của các bạn, lắng nghe các yêu cầu và các câu hỏi, giải thích trong tầm hiểu biết của bản thân mình.
+2. Tạo ra một bản production-ready của static server phục vụ cho nhu cầu render ảnh với các kích thước khác nhau
+3. Mình tin là người Việt Nam cũng có nhiều bạn sẵn sàng làm việc cho một dự án phi lợi nhuận (Nonprofit) :D, ít nhất trong project này. Mình hoan nghênh mọi cống hiến của các bạn, lắng nghe các yêu cầu và các câu hỏi, mình sẽ giải thích trong tầm hiểu biết của bản thân mình.
 
 ## Yêu cầu
 
@@ -35,7 +35,7 @@
 2. Project config (gitignore, eslint, prettier, ...)
 3. Upload ảnh với [multer](https://github.com/expressjs/multer)
 4. Lưu thông tin ảnh với [lowdb](https://github.com/typicode/lowdb)
-5. Render ảnh với Nodejs Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
+5. Render ảnh với NodeJS Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
 6. Resize và render ảnh với [sharp](https://github.com/lovell/sharp)
 7. Chèn watermark với [sharp](https://github.com/lovell/sharp)
 8. Ghi log với [winston](https://github.com/winstonjs/winston)
@@ -54,7 +54,7 @@
 
 ## Road map
 
-Về cơ bản mình đã hoàn thành được 40% của project (gồm code và test), còn 10% của check security và 50% của deploy app lên một VPS. Mình sẽ post đều đều 2 bài/1 tuần, hi vọng hết tết các bạn có thể hoàn thành xong project. Cứ mong vậy đi.
+Về cơ bản mình đã hoàn thành được 40% của project (gồm code và test), còn 10% của check security và 50% của deploy app lên một VPS. Mình sẽ post đều đều 2 bài/1 tuần, hi vọng hết tết Âm lịch các bạn có thể hoàn thành xong project. Cứ mong vậy đi.
 
 ## Cách tiếp cận
 
@@ -62,7 +62,7 @@ Về cơ bản mình đã hoàn thành được 40% của project (gồm code v�
 
 * Mình post bài, các bạn đọc
 * Gặp bug, không hiểu -> google -> hỏi ở một số group hoặc stackoverflow -> post issue lên trang github của project này -> tự xử. Chắc chắn là mình không thể trả lời hết các câu hỏi của các bạn, nên hãy tự thân vận động trước đi, hãy tính đến trường hợp xấu nhất là bạn không tìm được giải pháp rồi chán project.
-* Đặt câu hỏi về một số đoạn code mà bạn cho là mình code sai. Tất nhiên rồi, mình là người mà (:D) nên mình cũng sẽ sai, chúng ta sẽ thảo luận
+* Đặt câu hỏi về một số đoạn code mà bạn cho là mình code sai. Tất nhiên rồi, mình là người mà (:D) nên mình cũng sẽ sai, chúng ta sẽ thảo luận như hai người đàn ông (có thể là n ngưòi đàn ông :D).
 
 2. Hướng tích cực
 

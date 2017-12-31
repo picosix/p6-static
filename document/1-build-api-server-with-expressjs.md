@@ -18,19 +18,21 @@ $ yarn init
 
 ```shell
 yarn init v1.3.2
-question name (p6-static):
-question version (1.0.0): 0.0.1
-question description: Serve an image at different size / resolution depending on user request Edit
+question name (p6-static-example):
+question version (0.0.1):
+question description (Serve an image at different size / resolution depending on user request):
 question entry point (index.js):
-question repository url: git@github.com:picosix/p6-static.git
-question author: TuanNguyen
+question repository url (git@github.com:picosix/p6-static-example.git):
+question author (TuanNguyen):
 question license (MIT):
 question private:
 success Saved package.json
-Done in 39.59s.
+Done in 7.53s.
 ```
 
-* Bây giờ bạn sẽ có một file `package.json` trong project của bạn (với mình là `~/projects/p6-static/package.json`). Tiếp theo bạn cần cài `express` và `lodash`
+Nếu bạn thấy output của bạn không giống của mình thì ... kệ nó đi, đôi khi nó khác cũng có thể do mình cập nhật document thiếu vài chỗ. Output chỗ này không quan trọng.
+
+* Bây giờ bạn sẽ có một file `package.json` trong project của bạn (với mình là `~/projects/p6-static-example/package.json`). Tiếp theo bạn cần cài `express` và `lodash`
 
 ```shell
 $ yarn add express lodash
@@ -78,15 +80,15 @@ và truy cập địa chỉ [localhost:9999](http://localhost:9999) bạn sẽ t
 
 ## Sử dụng biến môi trường để lưu config
 
-Trong file `index.js` ở trên bạn có thấy mình sử dụng biến `process.env.PORT`, biến này có thể được lấy từ param trên câu lện của bạn. Thay vì chỉ chạy `$ node index.js`, bạn có thể chạy câu lệnh sau
+Trong file `index.js` ở trên bạn có thấy mình sử dụng biến `process.env.PORT`, biến này có thể được lấy từ param trên câu lệnh của bạn. Thay vì chỉ chạy `$ node index.js`, bạn có thể chạy câu lệnh sau
 
 ```shell
 $ PORT=9998 node index.js
 ```
 
-Bây giờ bạn vào trở lại app với đường [localhost:9998](http://localhost:9998) bạn sẽ thấy kết quả như trên.
+Bây giờ bạn vào trở lại app với đường dẫn [localhost:9998](http://localhost:9998) bạn sẽ thấy kết quả như trên.
 
-Vậy nếu bạ có cỡ 20 settings thì sao? Câu lệnh chắc dài cả cây số mất. Vì thế chúng ta có thư viện [dotenv](https://github.com/motdotla/dotenv)
+Vậy nếu bạn có cỡ 20 settings thì sao? Câu lệnh chắc dài cả cây số mất. Vì thế chúng ta có thư viện [dotenv](https://github.com/motdotla/dotenv)
 
 ### Cài đặt dotenv
 
@@ -114,8 +116,8 @@ với tham số `--require` (`-r`) sẽ bắt buộc node load nội dung file `
 
 Kể từ bây giờ bạn có thể dùng file `.env` để chứa tất cả biến môi trưòng mà bạn cần.
 
-* **Note:** Tất cả biến môi trường đều sẽ xử lý dưới dạng text, nếu bạ muốn dùng
-  * array -> lưu cách nhau bằng dấu `,` rồi cắt chuỗi. Ẽ; `ALLOW_TYPES=image/png,image/jpeg,image/gif`
+* **Note:** Tất cả biến môi trường đều sẽ xử lý dưới dạng text, nếu bạn muốn dùng
+  * array -> lưu cách nhau bằng dấu `,` rồi cắt chuỗi. Ex: `ALLOW_TYPES=image/png,image/jpeg,image/gif`
   * object -> lưu dạng json rồi decode
 
 ## Cài đặt development environment
@@ -128,7 +130,7 @@ Nãy giờ có một vấn đề mình chưa nói, là mỗi khi bạn cần ki�
 yarn add -D nodemon
 ```
 
-với tham số `-D` nghĩa là bạ muốn thêm thư viện `nodemon` vào block gọi là `devDependencies` -> chỉ xài với dev, không xài với production
+với tham số `-D` nghĩa là bạn muốn thêm thư viện `nodemon` vào block gọi là `devDependencies` -> chỉ xài với dev, không xài với production
 
 ### Sử dụng nodemon
 
@@ -219,9 +221,9 @@ Bạn cần check lại địa chỉ [localhost:9999](http://localhost:9999) và
 { "name": "p6-static-example", "version": "0.0.1" }
 ```
 
-Bạn nhớ trả sửa đổi của bạn về tình trạng cũ - show đủ thông tin `name`, `version`, `description`, `author`, `license`
+Bạn nhớ trả lại những dòng mà bạn đã sửa về như cũ - show đủ thông tin `name`, `version`, `description`, `author`, `license`
 
-## Push code to github
+## Push code lên github
 
 Nếu đây là lần đầu bạn có ý định push code lên github thì bạn cần
 
@@ -229,8 +231,8 @@ Nếu đây là lần đầu bạn có ý định push code lên github thì b�
 2. Thêm remote respo `$ git remote add origin git@github.com:picosix/p6-static-example.git`. Bạn nên thay `git@github.com:picosix/p6-static-example.git` bằng đường dẫn đến project của bạn. Với đường dẫn bắt đầu bằng `git` thì bạn cần có ssh key để push code. Bạn có thể đọc ở đây [Connecting to github with ssh](https://help.github.com/articles/connecting-to-github-with-ssh/)
 3. Config name và email cho git project
 
-* `$ git config user.name 'picosix'` # thay `picosix` bằng tên của ban
-* `$ git config user.email 'picosix.com@gmail.com' # thay`picosix.com@gmail.com` bằng email của bạn
+* `$ git config user.name 'picosix'` thay `picosix` bằng tên của ban
+* `$ git config user.email 'picosix.com@gmail.com` thay `picosix.com@gmail.com` bằng email của bạn
 
 4. Bạn cần copy nội dung file [.gitignore](https://github.com/picosix/p6-static/blob/master/.gitignore), lưu vào project của bạn với tên `.gitignore`
 5. Commit `git add . && git commit -m 'Init commit'`
@@ -240,9 +242,9 @@ Mình không đi sâu vào phần git vì có khá nhiều hướng dẫn bạn 
 
 ## Kết thúc
 
-Về cơ bản bạn đã setup xong một project API server với NodeJS và ExpressJS của bạn.
+Về cơ bản bạn đã setup xong một project API server với NodeJS và ExpressJS của bạn. Tuy nhiên chúng ta còn cần vài cài đặt để project có thể chạy mượt mà. Bạn có thể đợi mình giới thiệu ở bài kế hoặc tìm hiểu trước về `eslint`, `pretier`.
 
-Example: https://github.com/picosix/p6-static-example
+Result: https://github.com/picosix/p6-static-example
 
 ## Bài kế tiếp
 

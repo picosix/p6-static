@@ -2,3 +2,5 @@
 *.jpeg
 *.jpg
 *.webp
+
+!logo.png

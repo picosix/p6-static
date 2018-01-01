@@ -248,4 +248,4 @@ Result: https://github.com/picosix/p6-static-example/tree/28cfad7fd2a42d0bd369fb
 
 ## Bài kế tiếp
 
-Updating ...
+[Project config](./2.project-config.md)

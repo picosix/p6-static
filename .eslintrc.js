@@ -3,8 +3,5 @@ module.exports = {
   env: {
     mocha: true
   },
-  plugins: ['prettier'],
-  rules: {
-    'prettier/prettier': 'error'
-  }
+  plugins: ['prettier']
 };

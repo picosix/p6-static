@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const { allowSizes } = require('../config');
+const { allowSizes } = require('../settings');
 const { generateCacheUrl } = require('../services/image');
 
 const { Schema } = mongoose;

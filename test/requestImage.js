@@ -5,13 +5,13 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 const app = require('..');
-const config = require('../src/config');
+const config = require('../src/settings');
 const { ensureFolderCache } = require('../src/p6Static');
 
 const { assert } = chai;
 chai.use(chaiHttp);
 
-describe('[Interaction test] Request image with full size', () => {
+describe('Request image with full size', () => {
   let server;
   let fileName;
   let size;

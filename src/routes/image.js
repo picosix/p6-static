@@ -1,13 +1,18 @@
 const { Router } = require('express');
 const _ = require('lodash');
 const bluebird = require('bluebird');
-const { resize, upload, generateCacheUrl } = require('../services/image');
+const {
+  resizeWithEmbedded,
+  upload,
+  generateCacheUrl
+} = require('../services/image');
 const {
   folders,
   allowTypes,
   upload: uploadConfig,
-  allowSizes
-} = require('../config');
+  allowSizes,
+  embedded
+} = require('../settings');
 const { Image: ImageModel } = require('../db');
 
 const router = Router();
@@ -59,16 +64,16 @@ router.get('/:size/:name', async ({ params }, res, next) => {
     const { size, name } = params;
 
     // Create image ReadStream
-    const imageStream = await resize({
+    const imageStream = await resizeWithEmbedded({
       size,
       name,
       resourcePath: folders.resource,
       cachePath: folders.cache,
-      allowSizes
+      allowSizes,
+      embedded
     });
 
     // Stream image
-    res.append('p6-static', `${size} - ${name}`);
     return imageStream.pipe(res);
   } catch (error) {
     return next(error);

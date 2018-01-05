@@ -1,5 +1,5 @@
 const app = require('..');
-const { allowSizes, folders } = require('../src/config');
+const { allowSizes, folders } = require('../src/settings');
 const { ensureCacheFolder } = require('../src/services/image');
 
 ensureCacheFolder({

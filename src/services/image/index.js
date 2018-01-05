@@ -3,19 +3,48 @@ const sharp = require('sharp');
 const multer = require('multer');
 const _ = require('lodash');
 const bluebird = require('bluebird');
-const { caculateSize } = require('./resolver');
+const { caculateSize, caculateCompositePosition } = require('./resolver');
 const { folderMaker } = require('../utils/ensurer');
 
 /**
- * Resize image
+ * Resize image with specified size
+ * @param {object} param Function parameter with {src, size}
+ * @returns {Sharp}
+ */
+const resize = async ({ src, size }) => {
+  const image = sharp(src);
+  const imageMetadata = await image.metadata();
+
+  // Check request size
+  if (!size && size !== 'full') {
+    return bluebird.reject(new Error('Request invalid size'));
+  }
+  // Caculate image size
+  const { width, height } = caculateSize({
+    size,
+    width: imageMetadata.width,
+    height: imageMetadata.height
+  });
+  // Check caculated size
+  if (!width || !height) {
+    return bluebird.reject(new Error('Cannot caculate image size'));
+  }
+
+  // Resize
+  return image.resize(width, height);
+};
+
+/**
+ * Resize image and embedded image
  * @param {object} param Function parameter with {name, size, resourcePath, cachePath, allowSizes}
  */
-const resize = async ({
+const resizeWithEmbedded = async ({
   name,
   size,
   resourcePath,
   cachePath,
-  allowSizes = {}
+  allowSizes = {},
+  embedded
 }) => {
   try {
     // Check name
@@ -49,27 +78,23 @@ const resize = async ({
     if (!fs.existsSync(imagePath)) {
       return bluebird.reject(new Error(`Image ${name} is not found`));
     }
-    const image = sharp(imagePath);
-    const imageMetadata = await image.metadata();
-
-    // Check request size
     const requestSize = allowSizes[size] ? allowSizes[size] : size;
-    if (!requestSize && requestSize !== 'full') {
-      return bluebird.reject(new Error('Request invalid size'));
-    }
-    // Caculate image size
-    const { width, height } = caculateSize({
-      size: requestSize,
-      width: imageMetadata.width,
-      height: imageMetadata.height
-    });
-    // Check caculated size
-    if (!width || !height) {
-      return bluebird.reject(new Error('Cannot caculate image size'));
+    const image = await resize({ src: imagePath, size: requestSize });
+
+    // Embedded image
+    if (embedded && embedded.src) {
+      const embeddedRequestSize =
+        _.isObject(embedded.allowSizes) && embedded.allowSizes[size]
+          ? embedded.allowSizes[size]
+          : 'full';
+      const embeddedImage = await resize({
+        src: embedded.src,
+        size: embeddedRequestSize
+      });
+      const gravity = caculateCompositePosition(embedded.position);
+      image.overlayWith(await embeddedImage.toBuffer(), { gravity });
     }
 
-    // Resize
-    image.resize(width, height);
     // Write cache file
     image
       .clone()
@@ -167,4 +192,10 @@ const ensureCacheFolder = async ({ cachePath, allowSizes }) => {
   return folderMaker(cacheSizes);
 };
 
-module.exports = { resize, upload, generateCacheUrl, ensureCacheFolder };
+module.exports = {
+  resize,
+  resizeWithEmbedded,
+  upload,
+  generateCacheUrl,
+  ensureCacheFolder
+};

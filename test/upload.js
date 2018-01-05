@@ -4,12 +4,12 @@ const chaiHttp = require('chai-http');
 const shelljs = require('shelljs');
 
 const app = require('..');
-const config = require('../src/config');
+const config = require('../src/settings');
 
 const { assert } = chai;
 chai.use(chaiHttp);
 
-describe('[Interaction test] Upload', () => {
+describe('Upload', () => {
   let server;
 
   before(async () => {

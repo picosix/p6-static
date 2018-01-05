@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 
-const { debug } = require('./config');
+const { debug } = require('./settings');
 const routes = require('./routes');
 
 const app = express();
@@ -20,7 +20,7 @@ app.use((err, req, res, next) => {
     ? err.message
     : 'An error encountered while processing images';
   res.status(500).json({ message });
-  console.log(message)
+  console.log(err)
 
   return next();
 });

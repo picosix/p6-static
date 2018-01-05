@@ -60,6 +60,8 @@ const caculateSize = ({
  * @returns {object}
  */
 const caculateCompositePosition = position =>
-  ALLOW_POSITION.indexOf(position) < 0 ? DEFAULT_POSITION : position;
+  _.isString(position) && ALLOW_POSITION.indexOf(position) > -1
+    ? position
+    : DEFAULT_POSITION;
 
 module.exports = { caculateSize, caculateCompositePosition };

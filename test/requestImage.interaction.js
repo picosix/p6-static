@@ -20,21 +20,21 @@ describe('[Interaction test] Request image with full size', () => {
     //  Clear cache
     shelljs.rm('-rf', `${config.folders.cache}/*`);
     // Create size cache folder again
-    await ensureFolderCache(config.folders.cache, config.sizes);
+    await ensureFolderCache(config.folders.cache, config.allowSizes);
     // Clear resource
     shelljs.rm('-rf', `${config.folders.resource}/*`);
 
     server = chai.request(app);
 
     const { body } = await server
-      .post('/upload')
+      .post('/image/upload')
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),
         'SuperWoman.jpg'
       );
     fileName = body.images[0].name;
-    [size] = Object.keys(config.sizes);
+    [size] = Object.keys(config.allowSizes);
   });
 
   it('should return image binary will full size', async () => {

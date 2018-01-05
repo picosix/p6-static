@@ -19,7 +19,7 @@ describe('[Interaction test] Upload', () => {
 
   it('should upload images successfully', async () => {
     const { status, body } = await server
-      .post('/upload')
+      .post('/image/upload')
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),

@@ -1,19 +1,11 @@
-const _ = require('lodash');
 const app = require('..');
-const config = require('../src/config');
-const { ensureFolder } = require('../src/p6Static');
+const { allowSizes, folders } = require('../src/config');
+const { ensureCacheFolder } = require('../src/services/image');
 
-const createFolder = async appConfig => {
-  await ensureFolder(appConfig.folders);
-  const cacheSizeFolders = _.map(
-    _.assign({ full: true }, appConfig.sizes),
-    (sizeValue, sizeName) => `${appConfig.folders.cache}/${sizeName}`
-  );
-  await ensureFolder(cacheSizeFolders);
-  return appConfig.folders;
-};
-
-createFolder(config).then(() => {
+ensureCacheFolder({
+  cachePath: folders.cache,
+  allowSizes
+}).then(() => {
   const port = process.env.PORT || 9999;
   app.listen(port);
 });

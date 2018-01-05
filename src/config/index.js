@@ -5,16 +5,19 @@ module.exports = {
   folders: {
     resource: path.resolve(
       __dirname,
-      '..',
+      '../..',
       process.env.FOLDER_RESOURCE || 'resource'
     ),
-    cache: path.resolve(__dirname, '..', process.env.FOLDER_CACHE || 'cache'),
+    cache: path.resolve(
+      __dirname,
+      '../..',
+      process.env.FOLDER_CACHE || 'cache'
+    ),
     static: path.resolve(
       __dirname,
-      '..',
+      '../..',
       process.env.FOLDER_STATIC || 'static'
-    ),
-    log: path.resolve(__dirname, '..', process.env.FOLDER_LOG || 'log')
+    )
   },
   allowTypes: process.env.ALLOW_TYPES.split(',').map(
     type => (typeof type === 'string' ? type.trim() : type)
@@ -27,7 +30,7 @@ module.exports = {
   },
   embedded: {
     src: process.env.EMBEDDED_FILE,
-    sizes: {
+    allowSizes: {
       xs: 0.2,
       sm: 0.4,
       md: 0.6,
@@ -36,7 +39,7 @@ module.exports = {
     },
     position: process.env.EMBEDDED_POSITION || 'southwest'
   },
-  sizes: {
+  allowSizes: {
     // You can use percent
     xs: 0.2,
     sm: 0.4,

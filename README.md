@@ -10,20 +10,20 @@ Description: updating ...
 
 0. [Idea](./document/0-idea.md)
 1. [Build API server with ExpressJS](./document/1-build-api-server-with-expressjs.md)
-2. [Project config (gitignore, eslint, prettier, ...)](./document/2.project-config.md)
-3. [Upload image with multer](./document/3-upload-image-with-multer.md)
-4. Save image information with [lowdb](https://github.com/typicode/lowdb)
-5. Render image with NodeJS Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
-6. Resize and render image with [sharp](https://github.com/lovell/sharp)
-7. Embedded watermark with [sharp](https://github.com/lovell/sharp)
-8. Write log with [winston](https://github.com/winstonjs/winston)
-9. Write test case
-10. Dockerized your app
-11. Refactor your app structure
+1. [Project config (gitignore, eslint, prettier, ...)](./document/2.project-config.md)
+1. [Upload image with multer](./document/3-upload-image-with-multer.md)
+1. Save image information with [lowdb](https://github.com/typicode/lowdb)
+1. Render image with NodeJS Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
+1. Resize and render image with [sharp](https://github.com/lovell/sharp)
+1. Embedded watermark with [sharp](https://github.com/lovell/sharp)
+1. Write log with [winston](https://github.com/winstonjs/winston)
+1. Write test case
+1. Dockerized your app
+1. Refactor your app structure
 
 ## Contributors
 
-* Maintainer picosix <picosix.com@gmail.com>
+* Maintainer picosix <mailto:picosix.com@gmail.com>
 
 Updating ...
 
@@ -43,8 +43,9 @@ Updating ...
 
 3. Run docker containers
 
+* Mongo database `$ docker run -d --restart always --name mongo -p 27017:27017 -v $(pwd)/backup:/backup mongo:3`
 * Nginx proxy `$ docker run -d --restart always --name nginx-proxy -p 80:80 -p 443:443 -v $(pwd)/certs:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy`
-* Node app `$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-node -v $(pwd):/app picosix/node yarn start-dev`
+* Node app `$ docker run -d -e VIRTUAL_HOST=static.picosix.local -e DB_DATABASE=picosix --restart always --name p6-static-node -v $(pwd):/app --link mongo:mongo picosix/node yarn start-dev`
 * Nginx server `$ docker run -d -e VIRTUAL_HOST=static.picosix.local --restart always --name p6-static-nginx -v $(pwd)/docker/nginx:/etc/nginx/conf.d/ -v $(pwd):/app --link p6-static-node:p6_static_node picosix/nginx`
 
 ## Developing

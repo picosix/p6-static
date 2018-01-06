@@ -28,6 +28,7 @@ describe('Request image with full size', () => {
 
     const { body } = await server
       .post('/image/upload')
+      .set('Origin', process.env.VIRTUAL_HOST)
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),

@@ -8,9 +8,9 @@ const logger = require('./services/logger');
 
 const app = express();
 // Midleware
+app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride());
 
 // Routes
 app.use(routes);

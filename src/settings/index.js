@@ -52,5 +52,11 @@ module.exports = {
   },
   db: {
     connectString: `mongodb://mongo/${process.env.DB_DATABASE}`
-  }
+  },
+  allowHosts: [
+    process.env.VIRTUAL_HOST,
+    ...(process.env.CORS_DOMAIN
+      ? process.env.CORS_DOMAIN.split(',').map(org => org.trim())
+      : [])
+  ]
 };

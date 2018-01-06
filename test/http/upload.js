@@ -20,6 +20,7 @@ describe('Upload', () => {
   it('should upload images successfully', async () => {
     const { status, body } = await server
       .post('/image/upload')
+      .set('Origin', process.env.VIRTUAL_HOST)
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),

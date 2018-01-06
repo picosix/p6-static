@@ -4,9 +4,9 @@ const shelljs = require('shelljs');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
-const app = require('..');
-const config = require('../src/settings');
-const { ensureFolderCache } = require('../src/p6Static');
+const app = require('../..');
+const { folders, allowSizes } = require('../../src/settings');
+const { ensureCacheFolder } = require('../../src/services/image');
 
 const { assert } = chai;
 chai.use(chaiHttp);
@@ -18,11 +18,11 @@ describe('Request image with full size', () => {
 
   before(async () => {
     //  Clear cache
-    shelljs.rm('-rf', `${config.folders.cache}/*`);
+    shelljs.rm('-rf', `${folders.cache}/*`);
     // Create size cache folder again
-    await ensureFolderCache(config.folders.cache, config.allowSizes);
+    await ensureCacheFolder({ cachePath: folders.cache, allowSizes });
     // Clear resource
-    shelljs.rm('-rf', `${config.folders.resource}/*`);
+    shelljs.rm('-rf', `${folders.resource}/*`);
 
     server = chai.request(app);
 
@@ -34,7 +34,7 @@ describe('Request image with full size', () => {
         'SuperWoman.jpg'
       );
     fileName = body.images[0].name;
-    [size] = Object.keys(config.allowSizes);
+    [size] = Object.keys(allowSizes);
   });
 
   it('should return image binary will full size', async () => {
@@ -42,27 +42,23 @@ describe('Request image with full size', () => {
     // Assert
     assert.equal(status, 200);
     return new Promise((resolve, reject) =>
-      fs.readFile(
-        `${config.folders.cache}/full/${fileName}`,
-        'utf8',
-        (err, data) => {
-          if (err) return reject(err);
+      fs.readFile(`${folders.cache}/full/${fileName}`, 'utf8', (err, data) => {
+        if (err) return reject(err);
 
-          assert.equal(
-            crypto
-              .createHash('md5')
-              .update(text)
-              .digest('hex'),
+        assert.equal(
+          crypto
+            .createHash('md5')
+            .update(text)
+            .digest('hex'),
 
-            crypto
-              .createHash('md5')
-              .update(data)
-              .digest('hex')
-          );
+          crypto
+            .createHash('md5')
+            .update(data)
+            .digest('hex')
+        );
 
-          return resolve(true);
-        }
-      )
+        return resolve(true);
+      })
     );
   });
 
@@ -72,7 +68,7 @@ describe('Request image with full size', () => {
     assert.equal(status, 200);
     return new Promise((resolve, reject) =>
       fs.readFile(
-        `${config.folders.cache}/${size}/${fileName}`,
+        `${folders.cache}/${size}/${fileName}`,
         'utf8',
         (err, data) => {
           if (err) return reject(err);

@@ -35,6 +35,7 @@ module.exports = {
       sm: 0.4,
       md: 0.6,
       lg: 0.8,
+      full: 1,
       '70x70': { width: 10, height: 10 }
     },
     position: process.env.EMBEDDED_POSITION || 'southwest'
@@ -45,6 +46,7 @@ module.exports = {
     sm: 0.4,
     md: 0.6,
     lg: 0.8,
+    full: 1,
     // Or absolute size
     '70x70': { width: 70, height: 70 }
   }

@@ -25,11 +25,6 @@ const caculateSize = ({
   width: originalWidth,
   height: originalHeight
 }) => {
-  // Return full size, don't caculate anything
-  if (size === 'full') {
-    return { width: originalWidth, height: originalHeight };
-  }
-
   // Size is percent of original size
   if (_.isNumber(size)) {
     return { width: originalWidth * size, height: originalHeight * size };

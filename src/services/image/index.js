@@ -16,7 +16,7 @@ const resize = async ({ src, size }) => {
   const imageMetadata = await image.metadata();
 
   // Check request size
-  if (!size && size !== 'full') {
+  if (!size) {
     return bluebird.reject(new Error('Request invalid size'));
   }
   // Caculate image size
@@ -86,7 +86,7 @@ const resizeWithEmbedded = async ({
       const embeddedRequestSize =
         _.isObject(embedded.allowSizes) && embedded.allowSizes[size]
           ? embedded.allowSizes[size]
-          : 'full';
+          : 1;
       const embeddedImage = await resize({
         src: embedded.src,
         size: embeddedRequestSize
@@ -140,7 +140,7 @@ const upload = ({ resourcePath, allowTypes, config: uploadConfig }) => {
  * @throws {Error}
  * @returns {object}
  */
-const generateCacheUrl = ({ name, allowSizes }) => {
+const generateCacheUrl = ({ name, allowSizes, host }) => {
   // Chekc name
   if (!_.isString(name)) {
     throw new Error('Image name cannot be blank');
@@ -156,9 +156,10 @@ const generateCacheUrl = ({ name, allowSizes }) => {
 
   /* eslint no-param-reassign: 0 */
   return _.reduce(
-    _.assign({ full: 1 }, allowSizes),
-    (result, size) => {
-      result[size] = `/${size}/${name}`;
+    allowSizes,
+    (result, sizeVal, sizeName) => {
+      const hostinger = _.isString(host) ? host : '';
+      result[sizeName] = `${hostinger}/${sizeName}/${name}`;
       return result;
     },
     {}
@@ -185,8 +186,8 @@ const ensureCacheFolder = async ({ cachePath, allowSizes }) => {
     return bluebird.reject(new Error(`Image allowSizes cannot be blank`));
   }
   const cacheSizes = _.map(
-    _.assign({ full: 1 }, allowSizes),
-    (val, name) => `${cachePath}/${name}`
+    allowSizes,
+    (sizeVal, sizeName) => `${cachePath}/${sizeName}`
   );
 
   return folderMaker(cacheSizes);

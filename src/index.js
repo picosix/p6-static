@@ -4,7 +4,7 @@ const methodOverride = require('method-override');
 
 const { debug } = require('./settings');
 const routes = require('./routes');
-const logger = require('./services/logger');
+const logger = require('./libs/logger');
 
 const app = express();
 // Midleware

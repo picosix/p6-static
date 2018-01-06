@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const logger = require('../logger');
+const logger = require('../../libs/logger');
 
 // Constants
 const DEFAULT_POSITION = 'southwest';

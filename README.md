@@ -6,21 +6,6 @@
 
 Description: updating ...
 
-## Learning on this project (Vietnamese)
-
-0. [Idea](./document/0-idea.md)
-1. [Build API server with ExpressJS](./document/1-build-api-server-with-expressjs.md)
-1. [Project config (gitignore, eslint, prettier, ...)](./document/2.project-config.md)
-1. [Upload image with multer](./document/3-upload-image-with-multer.md)
-1. Save image information with [lowdb](https://github.com/typicode/lowdb)
-1. Render image with NodeJS Stream [File System](https://nodejs.org/api/fs.html#fs_fs_createreadstream_path_options)
-1. Resize and render image with [sharp](https://github.com/lovell/sharp)
-1. Embedded watermark with [sharp](https://github.com/lovell/sharp)
-1. Write log with [winston](https://github.com/winstonjs/winston)
-1. Write test case
-1. Dockerized your app
-1. Refactor your app structure
-
 ## Contributors
 
 * Maintainer picosix <mailto:picosix.com@gmail.com>

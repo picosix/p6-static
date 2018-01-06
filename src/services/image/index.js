@@ -4,8 +4,8 @@ const multer = require('multer');
 const _ = require('lodash');
 const bluebird = require('bluebird');
 const { caculateSize, caculateCompositePosition } = require('./resolver');
-const { folderMaker } = require('../../utils/ensurer');
-const logger = require('../logger');
+const { folderMaker } = require('../../libs/ensurer');
+const logger = require('../../libs/logger');
 
 /**
  * Resize image with specified size

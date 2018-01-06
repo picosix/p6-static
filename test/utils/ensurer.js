@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const chai = require('chai');
 const shell = require('shelljs');
-const { folderMaker } = require('../../src/utils/ensurer');
+const { folderMaker } = require('../../src/libs/ensurer');
 
 const { assert } = chai;
 

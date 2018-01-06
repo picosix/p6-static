@@ -88,8 +88,8 @@ module.exports = {
   },
   allowHosts: [
     process.env.VIRTUAL_HOST,
-    ...(process.env.CORS_DOMAIN
-      ? process.env.CORS_DOMAIN.split(',').map(org => org.trim())
+    ...(process.env.ALLOW_HOSTS
+      ? process.env.ALLOW_HOSTS.split(',').map(org => org.trim())
       : [])
   ]
 };

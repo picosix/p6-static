@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const _ = require('lodash');
 const bluebird = require('bluebird');
-const cors = require('cors');
 const {
   resizeWithEmbedded,
   upload,
@@ -13,27 +12,15 @@ const {
   upload: uploadConfig,
   allowSizes,
   embedded,
-  allowHosts,
   host
 } = require('../settings');
 const { Image: ImageModel } = require('../db');
 
 const router = Router();
-const corsFilter = cors({
-  origin(origin, cb) {
-    if (allowHosts.indexOf(origin) < 0) {
-      return cb(new Error(`${origin} is not allowed`));
-    }
-    return cb(null, true);
-  },
-  preflightContinue: true,
-  optionsSuccessStatus: 200
-});
 
 // Upload images
 router.post(
   '/upload',
-  corsFilter,
   upload({ resourcePath: folders.resource, allowTypes, uploadConfig }).array(
     'images'
   ),

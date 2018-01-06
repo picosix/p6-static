@@ -8,7 +8,7 @@
   "scripts": {
     "start-dev": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www.js",
     "lint": "./node_modules/.bin/eslint",
-    "pretest": "yarn lint .",
+    "pretest": "yarn lint src",
     "test": "node -r dotenv/config ./node_modules/.bin/mocha --exit --recursive"
   },
   "devDependencies": {

@@ -15,7 +15,7 @@ describe('Generate cache url', () => {
     assert.isObject(cacheUrls);
     _.each(cacheUrls, (url, name) => {
       assert.exists(allowSizes[name]);
-      assert.equal(`/${name}/${imageName}`, url);
+      assert.equal(`/image/${name}/${imageName}`, url);
     });
   });
 
@@ -25,7 +25,7 @@ describe('Generate cache url', () => {
     assert.isObject(cacheUrls);
     _.each(cacheUrls, (url, name) => {
       assert.exists(allowSizes[name]);
-      assert.equal(`${host}/${name}/${imageName}`, url);
+      assert.equal(`${host}/image/${name}/${imageName}`, url);
     });
   });
 });

@@ -167,7 +167,7 @@ const generateCacheUrl = ({ name, allowSizes, host }) => {
     allowSizes,
     (result, sizeVal, sizeName) => {
       const hostinger = _.isString(host) ? host : '';
-      result[sizeName] = `${hostinger}/${sizeName}/${name}`;
+      result[sizeName] = `${hostinger}/image/${sizeName}/${name}`;
       return result;
     },
     {}

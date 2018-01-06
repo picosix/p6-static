@@ -13,7 +13,8 @@ const {
   upload: uploadConfig,
   allowSizes,
   embedded,
-  allowHosts
+  allowHosts,
+  host
 } = require('../settings');
 const { Image: ImageModel } = require('../db');
 
@@ -55,7 +56,8 @@ router.post(
           name: filename,
           url: generateCacheUrl({
             name: filename,
-            allowSizes
+            allowSizes,
+            host
           })
         });
       });

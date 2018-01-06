@@ -4,7 +4,8 @@ const multer = require('multer');
 const _ = require('lodash');
 const bluebird = require('bluebird');
 const { caculateSize, caculateCompositePosition } = require('./resolver');
-const { folderMaker } = require('../utils/ensurer');
+const { folderMaker } = require('../../utils/ensurer');
+const logger = require('../logger');
 
 /**
  * Resize image with specified size
@@ -37,6 +38,7 @@ const resize = async ({ src, size }) => {
 /**
  * Resize image and embedded image
  * @param {object} param Function parameter with {name, size, resourcePath, cachePath, allowSizes}
+ * @returns {Promise|ReadStream}
  */
 const resizeWithEmbedded = async ({
   name,
@@ -99,7 +101,13 @@ const resizeWithEmbedded = async ({
     image
       .clone()
       .toFile(cacheImage)
-      .catch(console.log);
+      .catch(error =>
+        logger.log({
+          level: 'error',
+          message: error.message,
+          meta: { error, category: 'services.image.resizeWithEmbedded' }
+        })
+      );
     // Return ReadStream
     return image;
   } catch (error) {

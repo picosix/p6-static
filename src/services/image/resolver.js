@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const logger = require('../logger');
 
 // Constants
 const DEFAULT_POSITION = 'southwest';
@@ -43,7 +44,15 @@ const caculateSize = ({
       !_.isNaN(absoluteHeight)
     )
   ) {
-    return {};
+    logger.warning('Invalid size config. Return original size', {
+      size,
+      originalWidth,
+      originalHeight,
+      absoluteWidth,
+      absoluteHeight,
+      category: 'services.image.resolver.caculateSize'
+    });
+    return { width: originalWidth, height: originalHeight };
   }
 
   return { width: absoluteWidth, height: absoluteHeight };
@@ -54,9 +63,19 @@ const caculateSize = ({
  * @param {string} position Conposite image position
  * @returns {object}
  */
-const caculateCompositePosition = position =>
-  _.isString(position) && ALLOW_POSITION.indexOf(position) > -1
-    ? position
-    : DEFAULT_POSITION;
+const caculateCompositePosition = position => {
+  let pos = position;
+
+  if (!_.isString(position) || ALLOW_POSITION.indexOf(position) < 0) {
+    logger.warning('Invalid position config. Use DEFAULT_POSITION', {
+      position,
+      DEFAULT_POSITION,
+      category: 'services.image.resolver.caculateCompositePosition'
+    });
+    pos = DEFAULT_POSITION;
+  }
+
+  return pos;
+};
 
 module.exports = { caculateSize, caculateCompositePosition };

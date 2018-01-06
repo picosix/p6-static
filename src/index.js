@@ -4,6 +4,7 @@ const methodOverride = require('method-override');
 
 const { debug } = require('./settings');
 const routes = require('./routes');
+const logger = require('./services/logger');
 
 const app = express();
 // Midleware
@@ -15,12 +16,22 @@ app.use(methodOverride());
 app.use(routes);
 
 // Error handler
-app.use((err, req, res, next) => {
+app.use((error, { params, url, body }, res, next) => {
+  logger.log({
+    level: 'error',
+    message: error.message,
+    meta: {
+      category: 'http',
+      error,
+      params,
+      url,
+      body
+    }
+  });
   const message = debug
-    ? err.message
+    ? error.message
     : 'An error encountered while processing images';
   res.status(500).json({ message });
-  console.log(err)
 
   return next();
 });

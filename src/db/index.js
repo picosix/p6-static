@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const bluebird = require('bluebird');
+const { db } = require('../settings');
 
 // Mongoose config
-mongoose.connect(`mongodb://mongo/${process.env.DB_DATABASE}`);
+mongoose.connect(db.connectString);
 mongoose.Promise = bluebird;
 
 const Image = require('./image');

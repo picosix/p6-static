@@ -49,5 +49,8 @@ module.exports = {
     full: 1,
     // Or absolute size
     '70x70': { width: 70, height: 70 }
+  },
+  db: {
+    connectString: `mongodb://mongo/${process.env.DB_DATABASE}`
   }
 };

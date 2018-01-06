@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Serve an image at different size / resolution depending on user request",
   "main": "src/index.js",
-  "author": "TuanNguyen",
+  "author": "Tuan Nguyen <picosix.com@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start-dev": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www.js",
@@ -35,7 +35,8 @@
     "multer": "^1.3.0",
     "sharp": "^0.18.4",
     "slug": "^0.9.1",
-    "winston": "^3.0.0-rc1"
+    "winston": "^3.0.0-rc1",
+    "winston-mongodb": "^4.0.0-rc1"
   },
   "repository": "git@github.com:picosix/p6-static.git"
 }

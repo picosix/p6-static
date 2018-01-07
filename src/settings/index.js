@@ -82,7 +82,7 @@ module.exports = {
     position: process.env.EMBEDDED_POSITION || 'southwest'
   },
   allowSizes: parseAllowSizes(process.env.ALLOW_SIZES),
-  host: process.env.VIRTUAL_HOST,
+  host: process.env.SERVICE_HOST,
   db: {
     connectString: `mongodb://mongo/${process.env.DB_DATABASE}`
   },

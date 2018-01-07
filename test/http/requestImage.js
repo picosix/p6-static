@@ -5,7 +5,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 
 const app = require('../..');
-const { folders, allowSizes } = require('../../src/settings');
+const { folders, allowSizes, host } = require('../../src/settings');
 const { ensureCacheFolder } = require('../../src/services/image');
 
 const { assert } = chai;
@@ -28,7 +28,7 @@ describe('Request image with full size', () => {
 
     const { body } = await server
       .post('/image/upload')
-      .set('Origin', process.env.VIRTUAL_HOST)
+      .set('Origin', host)
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),

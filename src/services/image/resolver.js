@@ -28,7 +28,10 @@ const caculateSize = ({
 }) => {
   // Size is percent of original size
   if (_.isNumber(size)) {
-    return { width: originalWidth * size, height: originalHeight * size };
+    return {
+      width: Math.round(originalWidth * size),
+      height: Math.round(originalHeight * size)
+    };
   }
 
   // Size is absolute width and height
@@ -52,10 +55,16 @@ const caculateSize = ({
       absoluteHeight,
       category: 'services.image.resolver.caculateSize'
     });
-    return { width: originalWidth, height: originalHeight };
+    return {
+      width: Math.round(originalWidth),
+      height: Math.round(originalHeight)
+    };
   }
 
-  return { width: absoluteWidth, height: absoluteHeight };
+  return {
+    width: Math.round(absoluteWidth),
+    height: Math.round(absoluteHeight)
+  };
 };
 
 /**

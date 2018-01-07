@@ -4,7 +4,7 @@ const chaiHttp = require('chai-http');
 const shelljs = require('shelljs');
 
 const app = require('../..');
-const config = require('../../src/settings');
+const { folders, host } = require('../../src/settings');
 
 const { assert } = chai;
 chai.use(chaiHttp);
@@ -14,13 +14,13 @@ describe('Upload', () => {
 
   before(async () => {
     server = chai.request(app);
-    shelljs.rm('-rf', `${config.folders.resource}/*`);
+    shelljs.rm('-rf', `${folders.resource}/*`);
   });
 
   it('should upload images successfully', async () => {
     const { status, body } = await server
       .post('/image/upload')
-      .set('Origin', process.env.VIRTUAL_HOST)
+      .set('Origin', host)
       .attach(
         'images',
         fs.readFileSync(`${__dirname}/SuperWoman.jpg`),
@@ -38,7 +38,7 @@ describe('Upload', () => {
     );
 
     return new Promise(resolve =>
-      fs.readdir(config.folders.resource, (err, files) => {
+      fs.readdir(folders.resource, (err, files) => {
         assert.isNotOk(err);
         assert.equal(
           files.filter(file => file[0] !== '.').length,

@@ -21,13 +21,7 @@ Updating ...
 * Using SSH `git clone git@github.com:picosix/p6-static.git`
 * Using HTTPS: `git clone https://github.com/picosix/p6-static.git`
 
-2. Build docker images
-
-* Nginx Proxy `$ docker build --force-rm -t picosix/nginx-proxy -f docker/p6-nginx-proxy $(pwd)/docker`
-* Node `$ docker build --force-rm -t picosix/node -f docker/p6-node $(pwd)/docker`
-* Nginx `$ docker build --force-rm -t picosix/nginx -f docker/p6-nginx $(pwd)/docker`
-
-3. Run docker containers
+2. Run docker containers
 
 * Mongo database `$ docker run -d --restart always --name mongo -p 27017:27017 -v $(pwd)/backup:/backup mongo:3`
 * Nginx proxy `$ docker run -d --restart always --name nginx-proxy -p 80:80 -p 443:443 -v $(pwd)/certs:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro picosix/nginx-proxy`

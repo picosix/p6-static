@@ -11,7 +11,6 @@ import {
   Card
 } from 'antd';
 import _ from 'lodash';
-import './App.css';
 
 const { Header, Content, Footer } = Layout;
 
@@ -19,7 +18,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      serverUrl: 'http://static.picosix.local/image/upload',
+      serverUrl: `/image/upload`,
       images: []
     };
   }
@@ -51,7 +50,17 @@ class App extends Component {
     return (
       <Layout className="layout">
         <Header>
-          <img className="logo" src="/logo.png" alt="Logo" />
+          <img
+            className="logo"
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="Logo"
+            style={{
+              width: 31,
+              height: 31,
+              margin: '16px 24px 16px 0',
+              float: 'left'
+            }}
+          />
           <Menu
             theme="dark"
             mode="horizontal"
@@ -100,7 +109,7 @@ class App extends Component {
                         target="_blank"
                       >
                         <img
-                          style={{ width: '144px' }}
+                          style={{ width: 144, height: 108 }}
                           src={`//${item.src}`}
                           alt={item.title}
                         />

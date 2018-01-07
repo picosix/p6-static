@@ -86,10 +86,7 @@ module.exports = {
   db: {
     connectString: `mongodb://mongo/${process.env.DB_DATABASE}`
   },
-  allowHosts: [
-    process.env.VIRTUAL_HOST,
-    ...(process.env.ALLOW_HOSTS
-      ? process.env.ALLOW_HOSTS.split(',').map(org => org.trim())
-      : [])
-  ]
+  allowHosts: process.env.ALLOW_HOSTS
+    ? process.env.ALLOW_HOSTS.split(',').map(org => org.trim())
+    : []
 };

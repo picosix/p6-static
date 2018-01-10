@@ -8,8 +8,8 @@
   "scripts": {
     "start": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www-cluster.js",
     "start-dev": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www.js",
-    "lint": "./node_modules/.bin/eslint",
-    "pretest": "yarn lint src",
+    "linter": "./node_modules/.bin/eslint",
+    "pretest": "yarn linter src",
     "test": "node -r dotenv/config ./node_modules/.bin/mocha --exit --recursive"
   },
   "devDependencies": {

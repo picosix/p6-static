@@ -4,7 +4,6 @@ const multer = require('multer');
 const _ = require('lodash');
 const bluebird = require('bluebird');
 const { caculateSize, caculateCompositePosition } = require('./resolver');
-const { folderMaker } = require('../../libs/ensurer');
 const logger = require('../../libs/logger');
 
 /**
@@ -70,7 +69,7 @@ const resizeWithEmbedded = async ({
     }
 
     // Return ReadStream of existing cache file
-    const cacheImage = `${cachePath}/${size}/${name}`;
+    const cacheImage = `${cachePath}/${size}-${name}`;
     if (fs.existsSync(cacheImage)) {
       return fs.createReadStream(cacheImage);
     }
@@ -167,44 +166,16 @@ const generateCacheUrl = ({ name, allowSizes, host }) => {
     allowSizes,
     (result, sizeVal, sizeName) => {
       const hostinger = _.isString(host) ? host : '';
-      result[sizeName] = `${hostinger}/image/${sizeName}/${name}`;
+      result[sizeName] = `${hostinger}/image/${sizeName}-${name}`;
       return result;
     },
     {}
   );
 };
 
-/**
- * Ensure all cache folder of all size is exist
- * @param {object} param Function parameter with {path, allowSizes}
- * @throws {Error}
- * @returns {object}
- */
-const ensureCacheFolder = async ({ cachePath, allowSizes }) => {
-  // Check path
-  if (!_.isString(cachePath)) {
-    return bluebird.reject(new Error('Cache path cannot be blank'));
-  }
-  // Check type of allowSizes parameter
-  if (!_.isObject(allowSizes)) {
-    return bluebird.reject(new Error('Image allowSizes must be object'));
-  }
-  // Check allowSizes
-  if (_.isEmpty(allowSizes)) {
-    return bluebird.reject(new Error(`Image allowSizes cannot be blank`));
-  }
-  const cacheSizes = _.map(
-    allowSizes,
-    (sizeVal, sizeName) => `${cachePath}/${sizeName}`
-  );
-
-  return folderMaker(cacheSizes);
-};
-
 module.exports = {
   resize,
   resizeWithEmbedded,
   upload,
-  generateCacheUrl,
-  ensureCacheFolder
+  generateCacheUrl
 };

@@ -6,12 +6,11 @@ const chaiHttp = require('chai-http');
 
 const app = require('../..');
 const { folders, allowSizes, host } = require('../../src/settings');
-const { ensureCacheFolder } = require('../../src/services/image');
 
 const { assert } = chai;
 chai.use(chaiHttp);
 
-describe('Request image with full size', () => {
+describe('Request image with size', () => {
   let server;
   let fileName;
   let size;
@@ -19,8 +18,6 @@ describe('Request image with full size', () => {
   before(async () => {
     //  Clear cache
     shelljs.rm('-rf', `${folders.cache}/*`);
-    // Create size cache folder again
-    await ensureCacheFolder({ cachePath: folders.cache, allowSizes });
     // Clear resource
     shelljs.rm('-rf', `${folders.resource}/*`);
 
@@ -43,7 +40,7 @@ describe('Request image with full size', () => {
     // Assert
     assert.equal(status, 200);
     return new Promise((resolve, reject) =>
-      fs.readFile(`${folders.cache}/full/${fileName}`, 'utf8', (err, data) => {
+      fs.readFile(`${folders.cache}/full-${fileName}`, 'utf8', (err, data) => {
         if (err) return reject(err);
 
         assert.equal(
@@ -69,7 +66,7 @@ describe('Request image with full size', () => {
     assert.equal(status, 200);
     return new Promise((resolve, reject) =>
       fs.readFile(
-        `${folders.cache}/${size}/${fileName}`,
+        `${folders.cache}/${size}-${fileName}`,
         'utf8',
         (err, data) => {
           if (err) return reject(err);

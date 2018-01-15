@@ -6,7 +6,7 @@
   "author": "Tuan Nguyen <picosix.com@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config ./node_modules/.bin/pm2-runtime start bin/www.js -i 4",
+    "start": "node -r dotenv/config ./node_modules/.bin/pm2-runtime start bin/www.js",
     "start-dev": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www.js",
     "linter": "./node_modules/.bin/eslint",
     "pretest": "yarn linter src",

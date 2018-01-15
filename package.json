@@ -6,7 +6,7 @@
   "author": "Tuan Nguyen <picosix.com@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www-cluster.js",
+    "start": "node -r dotenv/config ./node_modules/.bin/pm2-runtime start bin/www-cluster.js",
     "start-dev": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www.js",
     "linter": "./node_modules/.bin/eslint",
     "pretest": "yarn linter src",
@@ -35,6 +35,7 @@
     "method-override": "^2.3.10",
     "mongoose": "^5.0.0-rc2",
     "multer": "^1.3.0",
+    "pm2": "^2.9.1",
     "sharp": "^0.18.4",
     "slug": "^0.9.1",
     "winston": "^3.0.0-rc1",

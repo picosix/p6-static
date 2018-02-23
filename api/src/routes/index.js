@@ -14,6 +14,7 @@ const upload = require("./upload");
 const saveUploadFiles = require("./saveUploadFiles");
 // Query images
 const queryImages = require("./queryImages");
+const queryImage = require("./queryImage");
 // Transform image
 const validate = require("./validate");
 const readCache = require("./readCache");
@@ -52,6 +53,7 @@ router.get(
   writeCache
 );
 router.get("/images", queryImages);
+router.get("/images/:_id", queryImage);
 // Error handler
 router.use(errorHandler);
 

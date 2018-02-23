@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const cors = require("cors");
 
-const { debug, port } = require("./settings");
+const { debug, port, allowHosts } = require("./settings");
 const routes = require("./routes");
 
 // Init app
@@ -14,7 +14,7 @@ app.set("port", port);
 app.use(methodOverride());
 app.use(
   cors({
-    origin: app.locals.settings.allowHosts,
+    origin: allowHosts,
     optionsSuccessStatus: 200,
     preflightContinue: true
   })

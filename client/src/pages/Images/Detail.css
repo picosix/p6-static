@@ -1,0 +1,11 @@
+.static-cache-preview .ant-card-body {
+  padding: 5px;
+}
+
+.static-cache-preview > .ant-card-head {
+  border: none;
+}
+
+.static-cache-preview > .ant-card-body {
+  padding: 0;
+}

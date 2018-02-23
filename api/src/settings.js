@@ -23,5 +23,6 @@ module.exports = {
     : [],
   allowHosts: process.env.ALLOW_HOSTS
     ? process.env.ALLOW_HOSTS.split(",").map(org => org.trim())
-    : []
+    : [],
+  domain: process.env.DOMAIN
 };

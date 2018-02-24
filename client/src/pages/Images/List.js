@@ -97,7 +97,6 @@ export default class PageImagesList extends Component {
     const url = !!_id ? `${QUERY_URL}/${_id}` : `${QUERY_URL}`;
     await axios.delete(url);
 
-    console.log(this.state.pagination);
     await this.query(
       this.state.pagination,
       this.state.filters,
@@ -184,7 +183,7 @@ export default class PageImagesList extends Component {
         className: "static-action",
         render: (noData, record) => [
           <Popconfirm
-            title="Do you want to clear all cache of this images?"
+            title="Do you want to clear all cache of this image?"
             key="clear-cache"
             onConfirm={this.clearCache(record._id)}
           >

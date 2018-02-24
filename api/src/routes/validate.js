@@ -49,22 +49,22 @@ module.exports = async (req, res, next) => {
     // Find the cache path
     const cachePath = path.resolve(folders.cache, `${type}-${size}-${name}`);
     // Store resouce file in request lifetime
-    res.locals.folders = { resource: resoucePath, cache: cachePath };
+    req.folders = { resource: resoucePath, cache: cachePath };
 
     // Store the request size
     const transformSize = transform[type][size];
     // Transform size is number
     if (typeof transformSize === "number") {
-      res.locals.size = transformSize;
+      req.size = transformSize;
     } else if (
       // Transform size is object contain "value" properties
       typeof transformSize === "object" &&
       typeof transformSize.value === "number"
     ) {
-      res.locals.size = transformSize.value;
+      req.size = transformSize.value;
     } else {
       // Just store transform "width" and "height"
-      res.locals.size = {
+      req.size = {
         width: transformSize.width,
         height: transformSize.height
       };
@@ -102,7 +102,7 @@ module.exports = async (req, res, next) => {
         );
       }
 
-      res.locals.embed = transformSize.embed;
+      req.embed = transformSize.embed;
     }
 
     return next();

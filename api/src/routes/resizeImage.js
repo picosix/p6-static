@@ -2,12 +2,12 @@ const calculateSize = require("../calculateSize");
 
 module.exports = async (req, res, next) => {
   try {
-    const { image } = res.locals;
+    const { image } = req;
     // Get new with and height
     const newSize = calculateSize(
-      res.locals.metadata.width,
-      res.locals.metadata.height,
-      res.locals.size
+      req.metadata.width,
+      req.metadata.height,
+      req.size
     );
     // Transform to new size
     image.resize.apply(image, newSize);

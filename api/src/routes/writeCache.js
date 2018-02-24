@@ -1,7 +1,9 @@
 module.exports = async (req, res, next) => {
   try {
-    const { cache } = res.locals.folders;
-    await res.locals.image.toFile(cache);
+    const { cache } = req.folders;
+    await req.image.toFile(cache);
+    
+    return next()
   } catch (error) {
     return next(error);
   }

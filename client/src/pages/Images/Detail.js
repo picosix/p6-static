@@ -1,11 +1,12 @@
 import React, { Component, PureComponent } from "react";
-import { Card, Col, Row, Tag } from "antd";
+import { Card, Col, Row, Tag, Popconfirm, Modal, Icon } from "antd";
 import axios from "axios";
 
 import "./Detail.css";
 import Wrapper from "@/components/Wrapper";
-import ClearCache from "./ClearCache";
 import { renderSize, renderDatetime, toName } from "@/utils";
+
+const QUERY_URL = "http://localhost:9999/images";
 
 class ImageCache extends PureComponent {
   render() {
@@ -100,8 +101,18 @@ export default class PageImagesDetail extends Component {
     this.setState({ image: data });
   }
 
+  clearCache = _id => async () => {
+    await axios.delete(`${QUERY_URL}/${_id}/cache`);
+
+    Modal.success({
+      title: "Success",
+      content: "All cache images has been deleted"
+    });
+  };
+
   render() {
     const {
+      _id,
       name,
       mimetype,
       size,
@@ -121,7 +132,15 @@ export default class PageImagesDetail extends Component {
               cover={<img alt={name} src={defaultSize.cacheUrl} />}
               title="Image detail"
               bodyStyle={{ lineHeight: 2 }}
-              actions={[<ClearCache {...this.state.image} />]}
+              actions={[
+                <Popconfirm
+                  title="Do you want to clear all cache of this image?"
+                  key="clear-cache"
+                  onConfirm={this.clearCache(_id)}
+                >
+                  <Icon style={{ cursor: "pointer" }} type="sync" />
+                </Popconfirm>
+              ]}
             >
               <div>Name: {name}</div>
               <div>Mimetype: {mimetype}</div>

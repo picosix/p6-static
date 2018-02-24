@@ -9,6 +9,8 @@ const {
 } = require("../../package");
 // Error handler
 const errorHandler = require("./errorHandler");
+// Statictis
+const statictis = require("./statictis");
 // Upload
 const upload = require("./upload");
 const saveUploadFiles = require("./saveUploadFiles");
@@ -30,20 +32,22 @@ const transformType = require("./transformType");
 const embed = require("./embed");
 const renderImage = require("./renderImage");
 const writeCache = require("./writeCache");
+const saveCacheDetail = require("./saveCacheDetail");
 
 const router = Router();
 
 // Root
-router.get("/", (req, res) =>
-  res.json({ name, version, description, author, license })
-);
+router.get("/", (req, res) => {
+  res.json({ name, version, description, author, license });
+});
+router.get("/statictis", statictis);
 // Upload image
 router.post(
   "/upload",
   upload().array("images"),
   saveUploadFiles,
   (req, res) => {
-    return res.json(res.locals.images);
+    return res.json(req.images);
   }
 );
 // Transform the image
@@ -56,7 +60,8 @@ router.get(
   transformType,
   embed,
   renderImage,
-  writeCache
+  writeCache,
+  saveCacheDetail
 );
 router.get("/images", prepareQuery, queryImages);
 router.delete("/images", deleteImages);

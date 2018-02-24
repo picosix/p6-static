@@ -220,6 +220,10 @@ async@^2.1.4:
   dependencies:
     lodash "^4.14.0"
 
+async@~0.2.9:
+  version "0.2.10"
+  resolved "https://registry.yarnpkg.com/async/-/async-0.2.10.tgz#b6bbe0b0674b9d719708ca38de8c237cb526c3d1"
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -2724,6 +2728,13 @@ node-pre-gyp@^0.6.39:
     tar "^2.2.1"
     tar-pack "^3.4.0"
 
+nodejs-disks@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/nodejs-disks/-/nodejs-disks-0.2.1.tgz#8bd4cff8ddae1e2059f2104f14c334f5b21fb9f1"
+  dependencies:
+    async "~0.2.9"
+    numeral "~1.4.8"
+
 nodemon@^1.15.1:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.15.1.tgz#54daa72443d8d5a548f130866b92e65cded0ed58"
@@ -2784,6 +2795,10 @@ npmlog@^4.0.2:
 number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
+
+numeral@~1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/numeral/-/numeral-1.4.8.tgz#3355e175069f7b2721574126789916d02dbcd31d"
 
 nwmatcher@^1.4.3:
   version "1.4.3"

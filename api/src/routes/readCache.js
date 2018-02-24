@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 module.exports = (req, res, next) => {
-  const { cache } = res.locals.folders;
+  const { cache } = req.folders;
 
   // Just a midleware for case nginx cannot serve that image
   // If cache path is exist, serve it

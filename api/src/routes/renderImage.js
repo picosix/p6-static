@@ -6,11 +6,11 @@ module.exports = async (req, res, next) => {
 
     // Crop image by focus on the region with the highest Shannon entropy.
     if (type === "crop") {
-      res.locals.image.crop(sharp.strategy.entropy);
+      req.image.crop(sharp.strategy.entropy);
     }
 
     // Clone new instance, serve it to client
-    const image = res.locals.image.clone();
+    const image = req.image.clone();
     image.pipe(res);
 
     // Go to next middleware to store the transformable image

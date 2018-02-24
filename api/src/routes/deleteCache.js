@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const util = require("util");
 
+const db = require("../db");
 const generateCacheUrl = require("../generateCacheUrl");
 const { folders } = require("../settings");
 
@@ -24,7 +25,12 @@ module.exports = async (req, res, next) => {
       unlink(path.resolve(folders.cache, cachePath))
     );
 
+    // Delete on disk
     await Promise.all(deleteQueue);
+    // Delete on db
+    await db
+      .model("Cache")
+      .remove({ imageId: new db.Types.ObjectId(image._id) });
 
     return res.json({ data: cacheUrls });
   } catch (error) {

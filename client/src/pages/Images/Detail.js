@@ -1,6 +1,7 @@
 import React, { Component, PureComponent } from "react";
 import { Card, Col, Row, Tag, Popconfirm, Modal, Icon } from "antd";
 import axios from "axios";
+import Lazyload from "react-lazyload";
 
 import "./Detail.css";
 import Wrapper from "@/components/Wrapper";
@@ -33,11 +34,13 @@ class ImageCache extends PureComponent {
               hoverable
               style={{ width: "100%", textAlign: "center" }}
               cover={
-                <img
-                  alt={`${type} - ${size}`}
-                  src={sizes[size]}
-                  style={{ height: 150 }}
-                />
+                <Lazyload>
+                  <img
+                    alt={`${type} - ${size}`}
+                    src={sizes[size]}
+                    style={{ height: 150 }}
+                  />
+                </Lazyload>
               }
               bodyStyle={bodyStyle}
             >

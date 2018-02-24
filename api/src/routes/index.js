@@ -60,8 +60,8 @@ router.get(
   transformType,
   embed,
   renderImage,
-  writeCache,
-  saveCacheDetail
+  saveCacheDetail,
+  writeCache
 );
 router.get("/images", prepareQuery, queryImages);
 router.delete("/images", deleteImages);

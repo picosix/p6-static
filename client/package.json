@@ -52,7 +52,9 @@
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "react-lazyload": "^2.3.0"
+  },
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"

@@ -29,7 +29,7 @@ class DetailLinkWrapper extends PureComponent {
   }
 }
 
-const QUERY_URL = "http://localhost:9999/images";
+const QUERY_URL = `${process.env.REACT_APP_API_URL}/images`;
 
 export default class PageImagesList extends Component {
   state = {

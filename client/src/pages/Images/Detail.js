@@ -7,7 +7,7 @@ import "./Detail.css";
 import Wrapper from "@/components/Wrapper";
 import { renderSize, renderDatetime, toName } from "@/utils";
 
-const QUERY_URL = "http://localhost:9999/images";
+const QUERY_URL = `${process.env.REACT_APP_API_URL}/images`;
 
 class ImageCache extends PureComponent {
   render() {
@@ -98,9 +98,7 @@ export default class PageImagesDetail extends Component {
 
   async componentDidMount() {
     const { match } = this.props;
-    const { data } = (await axios.get(
-      `http://localhost:9999/images/${match.params.id}`
-    )).data;
+    const { data } = (await axios.get(`${QUERY_URL}/${match.params.id}`)).data;
     this.setState({ image: data });
   }
 

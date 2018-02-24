@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Card, Col, Row } from "antd";
 import axios from "axios";
 
-const QUERY_URL = "http://localhost:9999/statictis";
+const QUERY_URL = `${process.env.REACT_APP_API_URL}/statictis`;
 const statictisCardStyles = {
   width: "100%",
   textAlign: "center",

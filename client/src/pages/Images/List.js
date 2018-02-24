@@ -1,11 +1,20 @@
 import React, { Component, PureComponent } from "react";
-import { Col, Row, Avatar, Table, Button, Icon, Input } from "antd";
-import r2 from "r2";
+import {
+  Col,
+  Row,
+  Avatar,
+  Table,
+  Button,
+  Icon,
+  Input,
+  Popconfirm,
+  Modal
+} from "antd";
+import axios from "axios";
 
 import "./List.css";
 import Wrapper from "@/components/Wrapper";
 import { renderSize, renderDatetime, calculateQueryString } from "@/utils";
-import ClearCache, { CLEAR_CACHE_TYPE_ALL } from "./ClearCache";
 
 class DetailLinkWrapper extends PureComponent {
   render() {
@@ -43,7 +52,7 @@ export default class PageImagesList extends Component {
     this.setState({ loading: true });
     const queryString = calculateQueryString(pagination, filters, sorter);
 
-    const { data, total } = await r2(`${QUERY_URL}?${queryString}`).json;
+    const { data, total } = (await axios.get(`${QUERY_URL}?${queryString}`)).data;
     const newPagination = Object.assign({}, this.state.pagination, { total });
     this.setState({
       dataSource: data,
@@ -57,6 +66,38 @@ export default class PageImagesList extends Component {
       [field]: e.target.value
     });
     this.setState({ filters });
+  };
+
+  clearCache = _id => async () => {
+    const url = !!_id ? `${QUERY_URL}/${_id}/cache` : `${QUERY_URL}/cache`;
+    await axios.delete(url);
+
+    Modal.success({
+      title: "Success",
+      content: "All cache images has been deleted"
+    });
+
+    await this.query(
+      this.state.pagination,
+      this.state.filters,
+      this.state.sorter
+    );
+  };
+
+  deleteImage = _id => async () => {
+    const url = !!_id ? `${QUERY_URL}/${_id}` : `${QUERY_URL}`;
+    await axios.delete(url);
+
+    await this.query(
+      this.state.pagination,
+      this.state.filters,
+      this.state.sorter
+    );
+
+    Modal.success({
+      title: "Success",
+      content: "Selected image(s) has been deleted successfully"
+    });
   };
 
   onFilter = async () => {
@@ -131,22 +172,30 @@ export default class PageImagesList extends Component {
         dataIndex: "",
         key: "action",
         className: "static-action",
-        render: (noData, record) => <ClearCache {...record} />
+        render: (noData, record) => [
+          <Popconfirm
+            title="Do you want to clear all cache of this images?"
+            key="clear-cache"
+            onConfirm={this.clearCache(record._id)}
+          >
+            <Icon style={{ cursor: "pointer" }} type="sync" />
+          </Popconfirm>,
+          <Popconfirm
+            title="Do you want to delete this image?"
+            key="delete-image"
+            onConfirm={this.deleteImage(record._id)}
+          >
+            <Icon
+              type="delete"
+              style={{ color: "#f50", marginLeft: 5, cursor: "pointer" }}
+            />
+          </Popconfirm>
+        ]
       }
     ];
 
     return (
       <Wrapper>
-        <Row gutter={8} style={{ marginBottom: 5 }}>
-          <Col span={24} style={{ textAlign: "right" }}>
-            <ClearCache type={CLEAR_CACHE_TYPE_ALL}>
-              <Button type="danger">
-                <Icon type="sync" />
-              </Button>
-            </ClearCache>
-          </Col>
-        </Row>
-
         <Row gutter={8}>
           <Col span={24}>
             <Table

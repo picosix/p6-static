@@ -16,6 +16,7 @@ class AppContent extends Component {
       </Breadcrumb.Item>
     ]
   };
+
   componentWillMount() {
     const { path, params } = this.props.match;
     const segments = path.split("/");
@@ -34,7 +35,7 @@ class AppContent extends Component {
       const index = idx + 1;
       const fullUrl = breadcrumbSegments
         .slice(0, index)
-        .map(({url}) => url)
+        .map(({ url }) => url)
         .join("/");
 
       if (index === breadcrumbSegments.length) {

@@ -15,9 +15,11 @@ const saveUploadFiles = require("./saveUploadFiles");
 // Query images
 const prepareQuery = require("./prepareQuery");
 const queryImages = require("./queryImages");
+const deleteImages = require("./deleteImages");
 const clearCache = require("./clearCache");
 const checkImageId = require("./checkImageId");
 const queryImage = require("./queryImage");
+const deleteImage = require("./deleteImage");
 const deleteCache = require("./deleteCache");
 // Transform image
 const validate = require("./validate");
@@ -57,9 +59,11 @@ router.get(
   writeCache
 );
 router.get("/images", prepareQuery, queryImages);
+router.delete("/images", deleteImages);
 router.delete("/images/cache", clearCache);
 router.param("_id", checkImageId);
 router.get("/images/:_id", queryImage);
+router.delete("/images/:_id", deleteImage);
 router.delete("/images/:_id/cache", deleteCache);
 // Error handler
 router.use(errorHandler);

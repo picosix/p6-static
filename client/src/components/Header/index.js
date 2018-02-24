@@ -59,12 +59,6 @@ class AppHeader extends Component {
           <Menu.Item key="images">
             <Icon type="database" /> Images
           </Menu.Item>
-          <Menu.Item key="users">
-            <Icon type="user" /> Users
-          </Menu.Item>
-          <Menu.Item key="settings">
-            <Icon type="setting" /> Settings
-          </Menu.Item>
         </Menu>
       </Header>
     );

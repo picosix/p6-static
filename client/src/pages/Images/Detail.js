@@ -1,6 +1,6 @@
 import React, { Component, PureComponent } from "react";
 import { Card, Col, Row, Tag } from "antd";
-import r2 from "r2";
+import axios from "axios";
 
 import "./Detail.css";
 import Wrapper from "@/components/Wrapper";
@@ -94,8 +94,9 @@ export default class PageImagesDetail extends Component {
 
   async componentDidMount() {
     const { match } = this.props;
-    const { data } = await r2(`http://localhost:9999/images/${match.params.id}`)
-      .json;
+    const { data } = (await axios.get(
+      `http://localhost:9999/images/${match.params.id}`
+    )).data;
     this.setState({ image: data });
   }
 

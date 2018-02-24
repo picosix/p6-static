@@ -4,6 +4,7 @@ import r2 from "r2";
 
 import "./Detail.css";
 import Wrapper from "@/components/Wrapper";
+import ClearCache from "./ClearCache";
 import { renderSize, renderDatetime, toName } from "@/utils";
 
 class ImageCache extends PureComponent {
@@ -74,7 +75,7 @@ class ImageCache extends PureComponent {
   }
 }
 
-export default class PageImages extends Component {
+export default class PageImagesDetail extends Component {
   state = {
     image: {
       _id: "",
@@ -119,6 +120,7 @@ export default class PageImages extends Component {
               cover={<img alt={name} src={defaultSize.cacheUrl} />}
               title="Image detail"
               bodyStyle={{ lineHeight: 2 }}
+              actions={[<ClearCache {...this.state.image} />]}
             >
               <div>Name: {name}</div>
               <div>Mimetype: {mimetype}</div>

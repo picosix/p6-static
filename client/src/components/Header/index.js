@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Menu, Icon } from "antd";
+import { Layout, Menu, Icon, Modal } from "antd";
 import { withRouter } from "react-router-dom";
 
 const { Header } = Layout;
@@ -13,8 +13,23 @@ const logo = {
 
 class AppHeader extends Component {
   state = {
-    activeMenu: "dashboard"
+    activeMenu: ""
   };
+
+  componentWillMount() {
+    const { path } = this.props.match;
+    const menu = path.match(/\/([\w+]+)\/?/);
+    if (!menu) return;
+
+    if (!menu[1]) {
+      return Modal.error({
+        title: "Error",
+        content: `Invalid navigation`
+      });
+    }
+
+    this.setState({ activeMenu: menu[1] });
+  }
 
   onClick = ({ key }) => {
     const { history } = this.props;
@@ -34,7 +49,7 @@ class AppHeader extends Component {
         <Menu
           theme="dark"
           mode="horizontal"
-          defaultSelectedKeys={[this.state.activeMenu]}
+          selectedKeys={[this.state.activeMenu]}
           style={{ lineHeight: "64px" }}
           onClick={this.onClick}
         >

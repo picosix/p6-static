@@ -1,5 +1,6 @@
 import React from "react";
 import { Tag } from "antd";
+const querystring = require("querystring");
 
 export const renderSize = size => {
   if (size < 1024) {
@@ -21,4 +22,29 @@ export const toName = name => {
   if (typeof name !== "string") return "";
 
   return name[0].toUpperCase() + name.slice(1);
+};
+
+export const calculateQueryString = (
+  { current = 1, pageSize = 10 },
+  filters,
+  { field, order }
+) => {
+  let query = {
+    page: current,
+    limit: pageSize
+  };
+
+  const queryFilters = Object.keys(filters).reduce(
+    (queryFilters, field) =>
+      !!filters[field]
+        ? Object.assign(queryFilters, { [field]: filters[field] })
+        : queryFilters,
+    {}
+  );
+
+  if (field) {
+    query.sort = `${order === "descend" ? "-" : ""}${field}`;
+  }
+
+  return querystring.stringify(Object.assign(query, queryFilters));
 };

@@ -5,10 +5,27 @@ const { domain } = require("../settings");
 
 module.exports = async (req, res, next) => {
   try {
-    let data = [];
-    const { includeDomain = 1 } = req.query;
+    let data = [],
+      query = {};
+    const { includeDomain = 1, name } = req.query;
+    const { skip, limit, sort } = req;
+
+    if (name) query.name = new RegExp(name);
+
     const Image = db.model("Image");
-    const images = await Image.find();
+    const images = await Image.find(query)
+      .select({
+        name: 1,
+        mimetype: 1,
+        size: 1,
+        createdAt: 1,
+        updatedAt: 1
+      })
+      .skip(skip)
+      .limit(limit)
+      .sort(sort)
+      .exec();
+    const total = await Image.count(query);
 
     for (let i = 0; i < images.length; i++) {
       const image = images[i].toObject();
@@ -16,15 +33,10 @@ module.exports = async (req, res, next) => {
         name: image.name,
         domain: !!Number(includeDomain) ? domain : ""
       });
-      data.push(
-        Object.assign(image, {
-          src,
-          path: ""
-        })
-      );
+      data.push(Object.assign(image, { src }));
     }
 
-    return res.json({ data });
+    return res.json({ total, data });
   } catch (error) {
     return next(error);
   }

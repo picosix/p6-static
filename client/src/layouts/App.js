@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, withRouter } from "react-router-dom";
 import { Layout } from "antd";
 
+import Wrapper from "@/components/Wrapper";
 import AppHeader from "@/components/Header";
 import AppContent from "@/components/Content";
 import AppFooter from "@/components/Footer";
@@ -9,22 +10,42 @@ import AppFooter from "@/components/Footer";
 import PageDashboard from "@/pages/Dashboard";
 import PageImages from "@/pages/Images";
 
+const renderPageContent = comp => () => {
+  const Page = withRouter(comp);
+  return (
+    <Wrapper>
+      <AppHeader />
+      <AppContent>
+        <Page />
+      </AppContent>
+      <AppFooter />
+    </Wrapper>
+  );
+};
+
 export default class LayoutApp extends Component {
   render() {
     return (
       <Layout className="layout">
-        <AppHeader />
-
-        <AppContent>
-          <Switch>
-            <Route exact path="/images/list" component={PageImages.List} />
-            <Route path="/images/:id" component={PageImages.Detail} />
-            <Route path="/images" component={PageImages.List} />
-            <Route path="/dashboard" component={PageDashboard} />
-          </Switch>
-        </AppContent>
-
-        <AppFooter />
+        <Switch>
+          <Route
+            exact
+            path="/images/list"
+            component={renderPageContent(PageImages.List)}
+          />
+          <Route
+            path="/images/:id"
+            component={renderPageContent(PageImages.Detail)}
+          />
+          <Route
+            path="/images"
+            component={renderPageContent(PageImages.List)}
+          />
+          <Route
+            path="/dashboard"
+            component={renderPageContent(PageDashboard)}
+          />
+        </Switch>
       </Layout>
     );
   }

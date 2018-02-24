@@ -1,7 +1,8 @@
 const transform = require("../transform.json");
 
-module.exports = ({ name, domain }) => {
+module.exports = ({ name, domain, reutrnCachePath = false }) => {
   let cacheUrls = {};
+  let cachePaths = [];
   domain = !!domain ? domain : "";
 
   const types = Object.keys(transform);
@@ -21,8 +22,10 @@ module.exports = ({ name, domain }) => {
       // Generate cache url for size of type
       const info = transform[type][size];
       cacheUrls[type][size] = `${domain}/${type}/${size}/${name}`;
+
+      cachePaths.push(`${type}-${size}-${name}`);
     }
   }
 
-  return cacheUrls;
+  return reutrnCachePath ? cachePaths : cacheUrls;
 };

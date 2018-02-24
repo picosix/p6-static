@@ -13,8 +13,12 @@ const errorHandler = require("./errorHandler");
 const upload = require("./upload");
 const saveUploadFiles = require("./saveUploadFiles");
 // Query images
+const prepareQuery = require("./prepareQuery");
 const queryImages = require("./queryImages");
+const clearCache = require("./clearCache");
+const checkImageId = require("./checkImageId");
 const queryImage = require("./queryImage");
+const deleteCache = require("./deleteCache");
 // Transform image
 const validate = require("./validate");
 const readCache = require("./readCache");
@@ -52,8 +56,11 @@ router.get(
   renderImage,
   writeCache
 );
-router.get("/images", queryImages);
+router.get("/images", prepareQuery, queryImages);
+router.delete("/images/cache", clearCache);
+router.param("_id", checkImageId);
 router.get("/images/:_id", queryImage);
+router.delete("/images/:_id/cache", deleteCache);
 // Error handler
 router.use(errorHandler);
 

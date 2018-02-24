@@ -52,8 +52,23 @@ export default class PageImagesList extends Component {
     this.setState({ loading: true });
     const queryString = calculateQueryString(pagination, filters, sorter);
 
-    const { data, total } = (await axios.get(`${QUERY_URL}?${queryString}`)).data;
-    const newPagination = Object.assign({}, this.state.pagination, { total });
+    const { data, total } = (await axios.get(
+      `${QUERY_URL}?${queryString}`
+    )).data;
+
+    if (data.length < 1) {
+      return await this.query(
+        Object.assign({}, this.state.pagination, {
+          current: pagination.current - 1
+        }),
+        this.state.filters,
+        this.state.sorter
+      );
+    }
+
+    const newPagination = Object.assign({}, this.state.pagination, pagination, {
+      total
+    });
     this.setState({
       dataSource: data,
       pagination: newPagination,
@@ -76,18 +91,13 @@ export default class PageImagesList extends Component {
       title: "Success",
       content: "All cache images has been deleted"
     });
-
-    await this.query(
-      this.state.pagination,
-      this.state.filters,
-      this.state.sorter
-    );
   };
 
   deleteImage = _id => async () => {
     const url = !!_id ? `${QUERY_URL}/${_id}` : `${QUERY_URL}`;
     await axios.delete(url);
 
+    console.log(this.state.pagination);
     await this.query(
       this.state.pagination,
       this.state.filters,

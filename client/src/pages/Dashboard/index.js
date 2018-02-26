@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Row, Modal } from "antd";
 import axios from "axios";
 
 const QUERY_URL = `${process.env.REACT_APP_API_URL}/statictis`;
@@ -9,14 +9,14 @@ const statictisCardStyles = {
   height: 120,
   fontWeight: 800,
   fontSize: 16,
-  color: 'white'
+  color: "white"
 };
 const statictisCardBodyStyles = { height: "100%" };
 const statictisCardRowStyles = {
   height: "100%",
   display: "flex",
-  "align-items": "center",
-  "justify-content": "center"
+  alignItems: "center",
+  justifyContent: "center"
 };
 
 export default class PageDashboard extends Component {
@@ -33,8 +33,24 @@ export default class PageDashboard extends Component {
   };
 
   async componentDidMount() {
-    const { data } = (await axios.get(QUERY_URL)).data;
-    this.setState(data);
+    try {
+      const { data } = (await axios.get(QUERY_URL, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })).data;
+      this.setState(data);
+    } catch (error) {
+      Modal.error({
+        title: "Unauthorized",
+        content: "Please login before perform this action",
+        onOk: () => {
+          localStorage.removeItem("token");
+          const { history } = this.props;
+          history.push("/auth");
+        }
+      });
+    }
   }
 
   render() {
@@ -43,7 +59,10 @@ export default class PageDashboard extends Component {
         <Col span={8}>
           <Card
             hoverable
-            style={Object.assign({ background: "#108ee9" }, statictisCardStyles)}
+            style={Object.assign(
+              { background: "#108ee9" },
+              statictisCardStyles
+            )}
             bodyStyle={statictisCardBodyStyles}
           >
             <Row gutter={8} style={statictisCardRowStyles}>
@@ -55,7 +74,10 @@ export default class PageDashboard extends Component {
         <Col span={8}>
           <Card
             hoverable
-            style={Object.assign({ background: "#87d068" }, statictisCardStyles)}
+            style={Object.assign(
+              { background: "#87d068" },
+              statictisCardStyles
+            )}
             bodyStyle={statictisCardBodyStyles}
           >
             <Row gutter={8} style={statictisCardRowStyles}>

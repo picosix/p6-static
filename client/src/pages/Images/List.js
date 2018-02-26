@@ -49,31 +49,50 @@ export default class PageImagesList extends Component {
   }
 
   query = async (pagination = {}, filters = {}, sorter = {}) => {
-    this.setState({ loading: true });
-    const queryString = calculateQueryString(pagination, filters, sorter);
+    try {
+      this.setState({ loading: true });
+      const queryString = calculateQueryString(pagination, filters, sorter);
 
-    const { data, total } = (await axios.get(
-      `${QUERY_URL}?${queryString}`
-    )).data;
+      const { data, total } = (await axios.get(`${QUERY_URL}?${queryString}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })).data;
 
-    if (data.length < 1) {
-      return await this.query(
-        Object.assign({}, this.state.pagination, {
-          current: pagination.current - 1
-        }),
-        this.state.filters,
-        this.state.sorter
+      if (data.length < 1) {
+        return await this.query(
+          Object.assign({}, this.state.pagination, {
+            current: pagination.current - 1
+          }),
+          this.state.filters,
+          this.state.sorter
+        );
+      }
+
+      const newPagination = Object.assign(
+        {},
+        this.state.pagination,
+        pagination,
+        {
+          total
+        }
       );
+      this.setState({
+        dataSource: data,
+        pagination: newPagination,
+        loading: false
+      });
+    } catch (error) {
+      Modal.error({
+        title: "Unauthorized",
+        content: "Please login before perform this action",
+        onOk: () => {
+          localStorage.removeItem("token");
+          const { history } = this.props;
+          history.push("/auth");
+        }
+      });
     }
-
-    const newPagination = Object.assign({}, this.state.pagination, pagination, {
-      total
-    });
-    this.setState({
-      dataSource: data,
-      pagination: newPagination,
-      loading: false
-    });
   };
 
   onFilterChange = field => e => {
@@ -84,29 +103,61 @@ export default class PageImagesList extends Component {
   };
 
   clearCache = _id => async () => {
-    const url = !!_id ? `${QUERY_URL}/${_id}/cache` : `${QUERY_URL}/cache`;
-    await axios.delete(url);
+    try {
+      const url = !!_id ? `${QUERY_URL}/${_id}/cache` : `${QUERY_URL}/cache`;
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
 
-    Modal.success({
-      title: "Success",
-      content: "All cache images has been deleted"
-    });
+      Modal.success({
+        title: "Success",
+        content: "All cache images has been deleted"
+      });
+    } catch (error) {
+      Modal.error({
+        title: "Unauthorized",
+        content: "Please login before perform this action",
+        onOk: () => {
+          localStorage.removeItem("token");
+          const { history } = this.props;
+          history.push("/auth");
+        }
+      });
+    }
   };
 
   deleteImage = _id => async () => {
-    const url = !!_id ? `${QUERY_URL}/${_id}` : `${QUERY_URL}`;
-    await axios.delete(url);
+    try {
+      const url = !!_id ? `${QUERY_URL}/${_id}` : `${QUERY_URL}`;
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
 
-    await this.query(
-      this.state.pagination,
-      this.state.filters,
-      this.state.sorter
-    );
+      await this.query(
+        this.state.pagination,
+        this.state.filters,
+        this.state.sorter
+      );
 
-    Modal.success({
-      title: "Success",
-      content: "Selected image(s) has been deleted successfully"
-    });
+      Modal.success({
+        title: "Success",
+        content: "Selected image(s) has been deleted successfully"
+      });
+    } catch (error) {
+      Modal.error({
+        title: "Unauthorized",
+        content: "Please login before perform this action",
+        onOk: () => {
+          localStorage.removeItem("token");
+          const { history } = this.props;
+          history.push("/auth");
+        }
+      });
+    }
   };
 
   onFilter = async () => {

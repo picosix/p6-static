@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const jwt = require("express-jwt");
 
 const {
   name,
@@ -7,8 +8,12 @@ const {
   author,
   license
 } = require("../../package");
+const { auth } = require("../settings");
+
 // Error handler
 const errorHandler = require("./errorHandler");
+// Auth
+const login = require("./login");
 // Statictis
 const statictis = require("./statictis");
 // Upload
@@ -40,7 +45,10 @@ const router = Router();
 router.get("/", (req, res) => {
   res.json({ name, version, description, author, license });
 });
-router.get("/statictis", statictis);
+// Auth
+router.post("/login", login);
+// Statistic
+router.get("/statictis", jwt({ secret: auth.secreteKey }), statictis);
 // Upload image
 router.post(
   "/upload",
@@ -63,13 +71,22 @@ router.get(
   saveCacheDetail,
   writeCache
 );
-router.get("/images", prepareQuery, queryImages);
-router.delete("/images", deleteImages);
-router.delete("/images/cache", clearCache);
+router.get(
+  "/images",
+  jwt({ secret: auth.secreteKey }),
+  prepareQuery,
+  queryImages
+);
+router.delete("/images", jwt({ secret: auth.secreteKey }), deleteImages);
+router.delete("/images/cache", jwt({ secret: auth.secreteKey }), clearCache);
 router.param("_id", checkImageId);
-router.get("/images/:_id", queryImage);
-router.delete("/images/:_id", deleteImage);
-router.delete("/images/:_id/cache", deleteCache);
+router.get("/images/:_id", jwt({ secret: auth.secreteKey }), queryImage);
+router.delete("/images/:_id", jwt({ secret: auth.secreteKey }), deleteImage);
+router.delete(
+  "/images/:_id/cache",
+  jwt({ secret: auth.secreteKey }),
+  deleteCache
+);
 // Error handler
 router.use(errorHandler);
 

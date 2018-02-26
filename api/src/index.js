@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const cors = require("cors");
 
-const { debug, port, allowHosts } = require("./settings");
+const { debug, port, allowHosts, auth } = require("./settings");
 const routes = require("./routes");
 
 // Init app

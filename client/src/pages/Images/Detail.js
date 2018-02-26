@@ -97,18 +97,50 @@ export default class PageImagesDetail extends Component {
   };
 
   async componentDidMount() {
-    const { match } = this.props;
-    const { data } = (await axios.get(`${QUERY_URL}/${match.params.id}`)).data;
-    this.setState({ image: data });
+    try {
+      const { match } = this.props;
+      const { data } = (await axios.get(`${QUERY_URL}/${match.params.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      })).data;
+      this.setState({ image: data });
+    } catch (error) {
+      Modal.error({
+        title: "Unauthorized",
+        content: "Please login before perform this action",
+        onOk: () => {
+          localStorage.removeItem("token");
+          const { history } = this.props;
+          history.push("/auth");
+        }
+      });
+    }
   }
 
   clearCache = _id => async () => {
-    await axios.delete(`${QUERY_URL}/${_id}/cache`);
+    try {
+      await axios.delete(`${QUERY_URL}/${_id}/cache`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
 
-    Modal.success({
-      title: "Success",
-      content: "All cache images has been deleted"
-    });
+      Modal.success({
+        title: "Success",
+        content: "All cache images has been deleted"
+      });
+    } catch (error) {
+      Modal.error({
+        title: "Unauthorized",
+        content: "Please login before perform this action",
+        onOk: () => {
+          localStorage.removeItem("token");
+          const { history } = this.props;
+          history.push("/auth");
+        }
+      });
+    }
   };
 
   render() {

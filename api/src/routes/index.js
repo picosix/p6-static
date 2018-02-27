@@ -60,7 +60,7 @@ router.post(
 );
 // Transform the image
 router.get(
-  "/:type/:size/:name",
+  "/image/:type/:size/:name",
   validate,
   readCache,
   loadImage,

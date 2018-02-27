@@ -1,4 +1,5 @@
 const transform = require("../transform.json");
+const { urlPrefix } = require("./settings");
 
 module.exports = ({ name, domain, reutrnCachePath = false }) => {
   let cacheUrls = {};
@@ -21,7 +22,7 @@ module.exports = ({ name, domain, reutrnCachePath = false }) => {
 
       // Generate cache url for size of type
       const info = transform[type][size];
-      cacheUrls[type][size] = `${domain}/${type}/${size}/${name}`;
+      cacheUrls[type][size] = `${domain}/${urlPrefix}/${type}/${size}/${name}`;
 
       cachePaths.push(`${type}-${size}-${name}`);
     }

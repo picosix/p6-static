@@ -59,7 +59,7 @@ export default class PageImagesList extends Component {
         }
       })).data;
 
-      if (data.length < 1) {
+      if (data.length < 1 && total > 0) {
         return await this.query(
           Object.assign({}, this.state.pagination, {
             current: pagination.current - 1

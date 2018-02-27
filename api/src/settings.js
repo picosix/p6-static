@@ -3,6 +3,7 @@ const path = require("path");
 module.exports = {
   debug: process.env.NODE_ENV !== "production",
   port: process.env.PORT || 9999,
+  urlPrefix: process.env.URL_PREFIX || "image",
   folders: {
     resource: path.resolve(
       __dirname,
@@ -28,6 +29,6 @@ module.exports = {
   auth: {
     username: process.env.AUTH_USER,
     password: process.env.AUTH_PASSOWRD,
-    secreteKey: process.env.AUTH_SECRET_KEY,
+    secreteKey: process.env.AUTH_SECRET_KEY
   }
 };

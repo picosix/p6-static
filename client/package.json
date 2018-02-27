@@ -47,9 +47,9 @@
     "whatwg-fetch": "2.0.3"
   },
   "scripts": {
-    "start": "node -r dotenv/config scripts/start.js",
-    "build": "node  -r dotenv/config scripts/build.js",
-    "test": "node  -r dotenv/config scripts/test.js --env=jsdom"
+    "start": "PORT=9999 node -r dotenv/config scripts/start.js",
+    "build": "node -r dotenv/config scripts/build.js",
+    "test": "node -r dotenv/config scripts/test.js --env=jsdom"
   },
   "devDependencies": {
     "react-lazyload": "^2.3.0"

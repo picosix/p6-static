@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Menu, Icon, Modal } from "antd";
-import { withRouter } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 
 const { Header } = Layout;
 
@@ -40,12 +40,14 @@ class AppHeader extends Component {
   render() {
     return (
       <Header>
-        <img
-          style={logo}
-          src={`${process.env.PUBLIC_URL}/logo.png`}
-          title="PicoSix Static"
-          alt="PicoSix Static"
-        />
+        <Link to="/">
+          <img
+            style={logo}
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            title="PicoSix Static"
+            alt="PicoSix Static"
+          />
+        </Link>
         <Menu
           theme="dark"
           mode="horizontal"

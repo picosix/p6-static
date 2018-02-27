@@ -1,13 +1,16 @@
 {
   "name": "picosix-static-api",
   "version": "1.0.0",
-  "description": "Serve an image at different size / resolution depending on user request",
+  "description":
+    "Serve an image at different size / resolution depending on user request",
   "author": "Tuan Nguyen <picosix.com@gmail.com>",
   "private": true,
   "license": "MIT",
   "scripts": {
+    "start": "yarn dev",
     "dev": "node -r dotenv/config ./node_modules/.bin/nodemon bin/www.js",
-    "test": "node -r dotenv/config ./node_modules/.bin/jest --verbose --forceExit"
+    "test":
+      "node -r dotenv/config ./node_modules/.bin/jest --verbose --forceExit"
   },
   "dependencies": {
     "body-parser": "^1.18.2",

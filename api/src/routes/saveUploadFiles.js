@@ -1,4 +1,5 @@
 const sharp = require("sharp");
+
 const db = require("../db");
 const generateCacheUrl = require("../generateCacheUrl");
 
@@ -11,7 +12,7 @@ module.exports = async (req, res, next) => {
   const insertQueue = req.files.map(
     async ({ mimetype, filename: name, path, size }) => {
       const Image = db.model("Image");
-      const cacheUrl = generateCacheUrl(name, true);
+      const cacheUrl = generateCacheUrl({ name });
 
       const { width, height } = await (await sharp(path)).metadata();
       // Convert to kb

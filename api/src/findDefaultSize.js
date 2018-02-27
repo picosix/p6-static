@@ -1,4 +1,5 @@
 const transform = require("../transform.json");
+const { urlPrefix } = require("./settings");
 
 module.exports = ({ name, domain }) => {
   let defaultSize;
@@ -23,7 +24,7 @@ module.exports = ({ name, domain }) => {
         defaultSize = {
           type,
           size,
-          cacheUrl: `${domain}/${type}/${size}/${name}`
+          cacheUrl: `${domain}/${urlPrefix}/${type}/${size}/${name}`
         };
       }
     }

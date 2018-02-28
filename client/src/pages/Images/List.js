@@ -218,8 +218,8 @@ export default class PageImagesList extends Component {
       },
       {
         title: "Size",
-        dataIndex: "size",
-        key: "size",
+        dataIndex: "fileSize",
+        key: "fileSize",
         sorter: true,
         render: renderSize
       },

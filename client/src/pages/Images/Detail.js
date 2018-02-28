@@ -85,7 +85,7 @@ export default class PageImagesDetail extends Component {
       _id: "",
       name: "",
       mimetype: "",
-      size: 0,
+      fileSize: 0,
       createdAt: "",
       defaultSize: {
         type: "",
@@ -148,7 +148,7 @@ export default class PageImagesDetail extends Component {
       _id,
       name,
       mimetype,
-      size,
+      fileSize,
       createdAt,
       defaultSize,
       cacheUrls
@@ -177,7 +177,7 @@ export default class PageImagesDetail extends Component {
             >
               <div>Name: {name}</div>
               <div>Mimetype: {mimetype}</div>
-              <div>Size: {renderSize(size)}</div>
+              <div>Size: {renderSize(fileSize)}</div>
               <div>Created At: {renderDatetime(createdAt)}</div>
               <div>
                 Default Size: <Tag color="#108ee9">{defaultSize.type}</Tag>

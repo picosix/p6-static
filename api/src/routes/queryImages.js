@@ -17,7 +17,7 @@ module.exports = async (req, res, next) => {
       .select({
         name: 1,
         mimetype: 1,
-        size: 1,
+        fileSize: 1,
         createdAt: 1,
         updatedAt: 1
       })

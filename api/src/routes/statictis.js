@@ -17,7 +17,8 @@ module.exports = async (req, res, next) => {
       availablePercent: 0
     };
     const mainDisk = (await findDriveDetail(await findDrives())).filter(
-      drive => drive && drive.drive === "/dev/sda1"
+      drive =>
+        drive && (drive.drive === "/dev/sda1" || drive.drive === "/dev/vda1")
     );
     if (mainDisk.length) {
       const {

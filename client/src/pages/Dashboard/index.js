@@ -139,6 +139,11 @@ export default class PageDashboard extends Component {
 
         <Row gutter={8} style={{ marginTop: 10 }}>
           <Col span={24}>
+            <h2>Demo upload</h2>
+          </Col>
+        </Row>
+        <Row gutter={8} style={{ marginTop: 5, minHeight: 300 }}>
+          <Col span={24}>
             <div className="clearfix">
               <Upload
                 className="static-upload"
@@ -157,7 +162,7 @@ export default class PageDashboard extends Component {
                 footer={null}
                 onCancel={this.handleCancel}
               >
-                <a target="_blank" href={previewImage} title="Priview image">
+                <a target="_blank" href={previewImage} title="Preview image">
                   <img
                     alt="example"
                     style={{ width: "100%" }}

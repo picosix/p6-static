@@ -1,8 +1,10 @@
 import React, { Component } from "react";
-import { Card, Col, Row, Modal } from "antd";
+import { Card, Col, Row, Modal, Upload, Icon } from "antd";
 import axios from "axios";
 
-const QUERY_URL = `${process.env.REACT_APP_API_URL}/statictis`;
+import "./index.css";
+import Wrapper from "@/components/Wrapper";
+
 const statictisCardStyles = {
   width: "100%",
   textAlign: "center",
@@ -29,16 +31,35 @@ export default class PageDashboard extends Component {
       available: "0 GB",
       usedPercent: 0,
       availablePercent: 0
-    }
+    },
+
+    previewVisible: false,
+    previewImage: "",
+    fileList: []
   };
+
+  handleCancel = () => this.setState({ previewVisible: false });
+
+  handlePreview = ({ response }) => {
+    const [{ url }] = response;
+    this.setState({
+      previewImage: url,
+      previewVisible: true
+    });
+  };
+
+  handleChange = ({ fileList }) => this.setState({ fileList });
 
   async componentDidMount() {
     try {
-      const { data } = (await axios.get(QUERY_URL, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+      const { data } = (await axios.get(
+        `${process.env.REACT_APP_API_URL}/statictis`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
         }
-      })).data;
+      )).data;
       this.setState(data);
     } catch (error) {
       Modal.error({
@@ -54,57 +75,100 @@ export default class PageDashboard extends Component {
   }
 
   render() {
+    const { previewVisible, previewImage, fileList } = this.state;
+
+    const uploadButton = (
+      <div>
+        <Icon type="plus" />
+        <div className="static-upload-text">Upload</div>
+      </div>
+    );
+
     return (
-      <Row gutter={8}>
-        <Col span={8}>
-          <Card
-            hoverable
-            style={Object.assign(
-              { background: "#108ee9" },
-              statictisCardStyles
-            )}
-            bodyStyle={statictisCardBodyStyles}
-          >
-            <Row gutter={8} style={statictisCardRowStyles}>
-              <Col span={12}>Total Images</Col>
-              <Col span={12}>{this.state.images}</Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card
-            hoverable
-            style={Object.assign(
-              { background: "#87d068" },
-              statictisCardStyles
-            )}
-            bodyStyle={statictisCardBodyStyles}
-          >
-            <Row gutter={8} style={statictisCardRowStyles}>
-              <Col span={12}>Total Cache Images</Col>
-              <Col span={12}>{this.state.cache}</Col>
-            </Row>
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card
-            hoverable
-            style={Object.assign({ background: "#f50" }, statictisCardStyles)}
-            bodyStyle={statictisCardBodyStyles}
-          >
-            <Row gutter={8} style={statictisCardRowStyles}>
-              <Col span={8}>Storage</Col>
-              <Col span={16} style={{ textAlign: "left" }}>
-                <p>Total: {this.state.storage.total}</p>
-                <p>
-                  Free space: {this.state.storage.available} /{" "}
-                  {this.state.storage.availablePercent} %
-                </p>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
+      <Wrapper>
+        <Row gutter={8}>
+          <Col span={8}>
+            <Card
+              hoverable
+              style={Object.assign(
+                { background: "#108ee9" },
+                statictisCardStyles
+              )}
+              bodyStyle={statictisCardBodyStyles}
+            >
+              <Row gutter={8} style={statictisCardRowStyles}>
+                <Col span={12}>Total Images</Col>
+                <Col span={12}>{this.state.images}</Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card
+              hoverable
+              style={Object.assign(
+                { background: "#87d068" },
+                statictisCardStyles
+              )}
+              bodyStyle={statictisCardBodyStyles}
+            >
+              <Row gutter={8} style={statictisCardRowStyles}>
+                <Col span={12}>Total Cache Images</Col>
+                <Col span={12}>{this.state.cache}</Col>
+              </Row>
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card
+              hoverable
+              style={Object.assign({ background: "#f50" }, statictisCardStyles)}
+              bodyStyle={statictisCardBodyStyles}
+            >
+              <Row gutter={8} style={statictisCardRowStyles}>
+                <Col span={8}>Storage</Col>
+                <Col span={16} style={{ textAlign: "left" }}>
+                  <p>Total: {this.state.storage.total}</p>
+                  <p>
+                    Free space: {this.state.storage.available} /{" "}
+                    {this.state.storage.availablePercent} %
+                  </p>
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+
+        <Row gutter={8} style={{ marginTop: 10 }}>
+          <Col span={24}>
+            <div className="clearfix">
+              <Upload
+                className="static-upload"
+                name="images"
+                action={`${process.env.REACT_APP_API_URL}/upload`}
+                listType="picture-card"
+                fileList={fileList}
+                onPreview={this.handlePreview}
+                onChange={this.handleChange}
+                multiple
+              >
+                {uploadButton}
+              </Upload>
+              <Modal
+                visible={previewVisible}
+                footer={null}
+                onCancel={this.handleCancel}
+              >
+                <a target="_blank" href={previewImage} title="Priview image">
+                  <img
+                    alt="example"
+                    style={{ width: "100%" }}
+                    src={previewImage}
+                  />
+                </a>
+              </Modal>
+            </div>
+          </Col>
+        </Row>
+      </Wrapper>
     );
   }
 }

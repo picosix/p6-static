@@ -2,7 +2,7 @@
 
 ## Development
 
-- Run Client Server `$ docker run -d -e VIRTUAL_HOST=static-client.picosix.info --restart always --name p6-static-client -v $(pwd)/client:/app --link p6-static-api:p6_static_api picosix/node-alpine yarn start`
+- Run Client Server `$ docker run -d -e VIRTUAL_HOST=static-client.picosix.info --restart always --name p6-static-client-nginx -v $(pwd)/client:/app --link p6-static-api:p6_static_api picosix/node-alpine yarn start`
 
 ## Production
 

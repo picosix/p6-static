@@ -11,6 +11,7 @@ import {
   Modal
 } from "antd";
 import axios from "axios";
+import Lazyload from "react-lazyload";
 
 import "./List.css";
 import Wrapper from "@/components/Wrapper";
@@ -176,7 +177,9 @@ export default class PageImagesList extends Component {
         key: "thumbnail",
         render: (src, record) => (
           <DetailLinkWrapper record={record}>
-            <Avatar size="large" src={src} />
+            <Lazyload>
+              <Avatar size="large" src={src} />
+            </Lazyload>
           </DetailLinkWrapper>
         )
       },

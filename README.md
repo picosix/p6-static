@@ -22,7 +22,9 @@ We need to run nginx server for API to render cache image and NodeJS server for 
 * Run Nginx's API `$ docker run -d -e VIRTUAL_HOST=static-api.picosix.info --restart always --name p6-static-api-nginx -v $(pwd)/docker/api:/etc/nginx/conf.d/ -v $(pwd)/api:/app --link p6-static-api:p6_static_api picosix/nginx`
 * Run Client server `$ docker run -d -e VIRTUAL_HOST=static-client.picosix.info --restart always --name p6-static-client-nginx -v $(pwd)/docker/client:/etc/nginx/conf.d/ -v $(pwd)/client/build:/usr/share/nginx/html picosix/nginx`
 
-## LicensingMIT License
+## Licensing
+
+MIT License
 
 Copyright (c) 2017 PicoSix
 

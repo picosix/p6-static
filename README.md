@@ -4,7 +4,7 @@
 
 ## Demo
 
-You can visi my demo site at (Static Demo)(http://static-client.picosix.info/)
+You can visi my demo site at [Static Demo](http://static-client.picosix.info/)
 
 ## Installing / Getting started
 

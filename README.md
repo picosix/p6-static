@@ -2,6 +2,10 @@
 
 > Serve an image at different size / resolution depending on user request
 
+## Demo
+
+You can visi my demo site at (Static Demo)(http://static-client.picosix.info/)
+
 ## Installing / Getting started
 
 ### Development
